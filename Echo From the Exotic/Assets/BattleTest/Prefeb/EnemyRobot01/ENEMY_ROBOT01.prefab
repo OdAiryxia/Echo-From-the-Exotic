@@ -1393,7 +1393,7 @@ MonoBehaviour:
   energyGainOnSkill: 20
   energyGainOnDamage: 5
   moveSpeed: 20
-  attackDistance: 2
+  attackDistance: 6
 --- !u!114 &-6882915580707679423
 MonoBehaviour:
   m_ObjectHideFlags: 0

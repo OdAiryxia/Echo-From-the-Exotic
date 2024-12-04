@@ -21,7 +21,7 @@ public class TypewriterEffect : MonoBehaviour
     }
     void Start()
     {
-        StartCoroutine(ShowText("Interaction Dialog Example\r\n互動對話範例"));
+        StartCoroutine(ShowText(""));
     }
 
     public IEnumerator ShowText(string newText)

@@ -8,6 +8,8 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager instance;
     [SerializeField] private GameObject loadingScreen;
+
+    [SerializeField] private Image loadingImage;
     [SerializeField] private Slider progressBar;
 
     void Awake()
@@ -52,6 +54,16 @@ public class GameManager : MonoBehaviour
 
         scenesLoading.Add(SceneManager.UnloadSceneAsync((int)SceneIndexes.Battlefield_SchoolOutdoor));
         scenesLoading.Add(SceneManager.LoadSceneAsync((int)SceneIndexes.World_SchoolOutdoor, LoadSceneMode.Additive));
+
+        StartCoroutine(GetSceneLoadProgress());
+    }
+
+    public void LoadWorldParkinglot()
+    {
+        LoadingScreenSetActive();
+
+        scenesLoading.Add(SceneManager.UnloadSceneAsync((int)SceneIndexes.World_SchoolOutdoor));
+        scenesLoading.Add(SceneManager.LoadSceneAsync((int)SceneIndexes.World_Parkinglot, LoadSceneMode.Additive));
 
         StartCoroutine(GetSceneLoadProgress());
     }

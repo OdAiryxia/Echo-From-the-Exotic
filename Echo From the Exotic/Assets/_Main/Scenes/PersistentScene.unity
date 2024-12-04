@@ -149,6 +149,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   loadingScreen: {fileID: 258934922}
+  loadingImage: {fileID: 0}
   progressBar: {fileID: 427825540}
 --- !u!4 &26667497
 Transform:

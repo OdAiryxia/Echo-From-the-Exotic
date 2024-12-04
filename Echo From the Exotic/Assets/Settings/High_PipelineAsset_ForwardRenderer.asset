@@ -1,34 +1,5 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!114 &-9070038454053054038
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5ebd35200f1b4a64af2b7a48699606db, type: 3}
-  m_Name: ASPMeshOutlineRendererFeature
-  m_EditorClassIdentifier: 
-  m_Active: 1
-  m_layer: 0
-  m_renderingLayerMask: 0
-  InjectPoint: 400
---- !u!114 &-6812347517624717327
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 555230a69720414fb1e5c16961bc2b16, type: 3}
-  m_Name: ASPMaterialPassFeature
-  m_EditorClassIdentifier: 
-  m_Active: 1
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -52,12 +23,8 @@ MonoBehaviour:
     probeVolumeSamplingDebugShader: {fileID: 4800000, guid: 8f96cd657dc40064aa21efcc7e50a2e7, type: 3}
     probeSamplingDebugMesh: {fileID: -3555484719484374845, guid: 57d7c4c16e2765b47a4d2069b311bffe, type: 3}
     probeSamplingDebugTexture: {fileID: 2800000, guid: 24ec0e140fb444a44ab96ee80844e18e, type: 3}
-  m_RendererFeatures:
-  - {fileID: -6812347517624717327}
-  - {fileID: 2215930619903443369}
-  - {fileID: 4278867916003638346}
-  - {fileID: -9070038454053054038}
-  m_RendererFeatureMap: f1ef76ad06ae75a1a98141862891c01e4a7c36feb297613baad908c714c02082
+  m_RendererFeatures: []
+  m_RendererFeatureMap: 
   m_UseNativeRenderPass: 0
   postProcessData: {fileID: 11400000, guid: 41439944d30ece34e96484bdb6645b55, type: 2}
   xrSystemData: {fileID: 11400000, guid: 60e1133243b97e347b653163a8c01b64, type: 2}
@@ -96,37 +63,3 @@ MonoBehaviour:
   m_CopyDepthMode: 1
   m_AccurateGbufferNormals: 0
   m_IntermediateTextureMode: 1
---- !u!114 &2215930619903443369
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cb765924ae3c43e59c3cc9a4bdcd145d, type: 3}
-  m_Name: ASPShadowMapFeature
-  m_EditorClassIdentifier: 
-  m_Active: 1
-  m_characterShadowMapResolution: 2048
-  ClipDistance: 50
-  CascadeCount: 1
-  ShadowFadeRatio: 0.2
-  UseScreenSpaceShadowPass: 0
-  ScreenSpaceShadowColor: {r: 0, g: 0, b: 0, a: 0.3}
---- !u!114 &4278867916003638346
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9858e26b053f48f9b788b3e9e67a0640, type: 3}
-  m_Name: ASPDepthOffsetShadowFeature
-  m_EditorClassIdentifier: 
-  m_Active: 1
-  m_layer: 0
-  m_renderingLayerMask: 0

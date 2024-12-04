@@ -38,6 +38,9 @@ public class BattleGameManager : MonoBehaviour
         {
             Destroy(gameObject);
         }
+
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
     }
 
     [System.Obsolete]
