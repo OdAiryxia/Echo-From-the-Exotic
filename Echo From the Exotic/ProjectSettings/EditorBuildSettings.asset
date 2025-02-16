@@ -6,19 +6,25 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/_Main/Scenes/PersistentScene.unity
+    path: Assets/Main/Scenes/PersistentScene.unity
     guid: d47abce6a2728a848a949e357bfa1f9f
   - enabled: 1
-    path: Assets/_Main/Scenes/TitleScreen.unity
+    path: Assets/Main/Scenes/UI.unity
+    guid: c1d727ec8fe78bc47b6202fa9af4fd45
+  - enabled: 1
+    path: Assets/Main/Scenes/TitleScreen.unity
     guid: 30aa34b2582c2c744a958d6dc9e05023
   - enabled: 1
-    path: Assets/_Main/Scenes/World_SchoolOutdoor.unity
+    path: Assets/Main/Scenes/World_SchoolOutdoor.unity
     guid: 9fc0d4010bbf28b4594072e72b8655ab
   - enabled: 1
-    path: Assets/_Main/Scenes/Battlefield_SchoolOutdoor.unity
+    path: Assets/Main/Scenes/Battlefield_SchoolOutdoor.unity
     guid: a59a3f51550bccf4eb4343cfdd636df4
   - enabled: 1
-    path: Assets/_Main/Scenes/scence_02-1.unity
+    path: Assets/Main/Scenes/World_Parkinglot_1.unity
     guid: 404be4ceb1cbbf64db03da57e8b2a2ad
+  - enabled: 1
+    path: Assets/Main/Scenes/BattleGround_Parkinglot_1.unity
+    guid: 05dcc4dc12c49b4479a486355980eea3
   m_configObjects: {}
   m_UseUCBPForAssetBundles: 0
