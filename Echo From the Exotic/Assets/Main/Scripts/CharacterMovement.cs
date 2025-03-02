@@ -7,27 +7,26 @@ using UnityEngine.UI;
 
 public class CharacterMovement : MonoBehaviour
 {
-    public CharacterController controller;
+    [SerializeField] private CharacterController controller;
     [SerializeField] private CanvasGroup aimCanvas;
     [SerializeField] private Image aimDot;
 
-    public Camera mainCamera;
-    public CinemachineFreeLook thirdPersonCamera;
-    public CinemachineVirtualCamera aimCamera;
+    [SerializeField] private Camera mainCamera;
+    [SerializeField] private CinemachineFreeLook thirdPersonCamera;
+    [SerializeField] private CinemachineVirtualCamera aimCamera;
 
-    public float moveSpeed = 50f;
-    public float sprintMultiplier = 1.5f;
-    public float gravityMultiplier = 1f;
-    public float renderDelay = 0.2f;
+    [SerializeField] private float moveSpeed = 50f;
+    [SerializeField] private float sprintMultiplier = 1.5f;
+    [SerializeField] private float gravityMultiplier = 1f;
+    [SerializeField] private float renderDelay = 0.2f;
 
     private float turnSmoothTime = 0.1f;
     private float turnSmoothVelocity;
 
     [SerializeField] Animator animator;
 
-    Vector3 velocity;
+    private Vector3 velocity;
     private bool isAiming = false;
-
     private Renderer[] playerRenderers;
     void Start()
     {
@@ -44,9 +43,12 @@ public class CharacterMovement : MonoBehaviour
 
     void Update()
     {
-        HandleAiming();
-        MoveCharacter();
-        HandleShooting();
+        if (!ProgressManager.instance.isStory)
+        {
+            HandleAiming();
+            MoveCharacter();
+            HandleShooting();
+        }
     }
 
     void HandleAiming()
@@ -92,7 +94,7 @@ public class CharacterMovement : MonoBehaviour
 
     void MoveCharacter()
     {
-        float speed = Input.GetKey(KeyCode.LeftShift) ? moveSpeed * sprintMultiplier : moveSpeed;
+        float speed = isAiming ? moveSpeed * 0.5f : (Input.GetKey(KeyCode.LeftShift) ? moveSpeed * sprintMultiplier : moveSpeed);
         float horizontal = Input.GetAxisRaw("Horizontal");
         float vertical = Input.GetAxisRaw("Vertical");
 
@@ -145,7 +147,6 @@ public class CharacterMovement : MonoBehaviour
             {
                 if (hit.collider.CompareTag("BattleTrigger")) // 只對 "BattleTrigger" 物體生效
                 {
-                    Debug.Log("擊中 BattleTrigger: " + hit.collider.gameObject.name);
                     aimDot.color = Color.red; // 命中時變紅
 
                     // **只有在按下左鍵時，才執行動作**

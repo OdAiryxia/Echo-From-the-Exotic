@@ -7,12 +7,13 @@ using UnityEngine.UI;
 public class GameManager : MonoBehaviour
 {
     public static GameManager instance;
-    [SerializeField] private GameObject loadingScreen;
 
+    [SerializeField] private GameObject loadingScreen;
+    [SerializeField] private CanvasGroup canvasGroup;
     [SerializeField] private Image loadingImage;
     [SerializeField] private Slider progressBar;
 
-    public bool reEnterGame = false;
+    List<AsyncOperation> scenesLoading = new List<AsyncOperation>();
 
     void Awake()
     {
@@ -26,93 +27,66 @@ public class GameManager : MonoBehaviour
             Destroy(gameObject);
         }
 
-        if (reEnterGame)
+        Screen.SetResolution(1920, 1080, FullScreenMode.FullScreenWindow);
+    }
+
+    void Start()
+    {
+        if (!SceneManager.GetSceneByBuildIndex((int)SceneIndexes.World_SchoolOutdoor).isLoaded)
         {
-            SceneManager.UnloadSceneAsync((int)SceneIndexes.World_SchoolOutdoor);
             SceneManager.LoadSceneAsync((int)SceneIndexes.TitleScreen, LoadSceneMode.Additive);
+            SceneManager.LoadSceneAsync((int)SceneIndexes.UI, LoadSceneMode.Additive);
+            currentWorldScene = SceneIndexes.TitleScreen;
         }
     }
 
-    List<AsyncOperation> scenesLoading = new List<AsyncOperation>();
-    public void EnterGame()
-    {
-        LoadingScreenSetActive();
+    [HideInInspector] public SceneIndexes currentWorldScene;
+    [HideInInspector] public SceneIndexes previousWorldScene;
 
-        scenesLoading.Add(SceneManager.UnloadSceneAsync((int)SceneIndexes.TitleScreen));
-        scenesLoading.Add(SceneManager.LoadSceneAsync((int)SceneIndexes.World_SchoolOutdoor, LoadSceneMode.Additive));
+    public void LoadScene(SceneIndexes newScene)
+    {
+        if (currentWorldScene != newScene)
+        {
+            scenesLoading.Add(SceneManager.UnloadSceneAsync((int)currentWorldScene));
+        }
+
+        currentWorldScene = newScene;
+        scenesLoading.Add(SceneManager.LoadSceneAsync((int)newScene, LoadSceneMode.Additive));
 
         StartCoroutine(GetSceneLoadProgress());
     }
 
-    public void LoadBattleSchoolOutdoor()
+    public void LoadBattleScene(SceneIndexes battleScene)
+    {
+        previousWorldScene = currentWorldScene;
+        LoadScene(battleScene);
+    }
+
+    private IEnumerator GetSceneLoadProgress()
     {
         LoadingScreenSetActive();
 
-        scenesLoading.Add(SceneManager.UnloadSceneAsync((int)SceneIndexes.World_SchoolOutdoor));
-        scenesLoading.Add(SceneManager.LoadSceneAsync((int)SceneIndexes.Battlefield_SchoolOutdoor, LoadSceneMode.Additive));
+        float totalSceneProgress = 0;
 
-        StartCoroutine(GetSceneLoadProgress());
-    }
-
-    public void LoadWorldSchoolOutdoor()
-    {
-        LoadingScreenSetActive();
-
-        scenesLoading.Add(SceneManager.UnloadSceneAsync((int)SceneIndexes.Battlefield_SchoolOutdoor));
-        scenesLoading.Add(SceneManager.LoadSceneAsync((int)SceneIndexes.World_SchoolOutdoor, LoadSceneMode.Additive));
-
-        StartCoroutine(GetSceneLoadProgress());
-    }
-
-    public void LoadBattleParkinglot()
-    {
-        LoadingScreenSetActive();
-
-        scenesLoading.Add(SceneManager.UnloadSceneAsync((int)SceneIndexes.World_Parkinglot));
-        scenesLoading.Add(SceneManager.LoadSceneAsync((int)SceneIndexes.Battlefield_Parkinglot, LoadSceneMode.Additive));
-
-        StartCoroutine(GetSceneLoadProgress());
-    }
-
-    public void LoadWorldParkinglot()
-    {
-        LoadingScreenSetActive();
-
-        scenesLoading.Add(SceneManager.UnloadSceneAsync((int)SceneIndexes.Battlefield_Parkinglot));
-        scenesLoading.Add(SceneManager.LoadSceneAsync((int)SceneIndexes.World_Parkinglot, LoadSceneMode.Additive));
-
-        StartCoroutine(GetSceneLoadProgress());
-    }
-
-    public void EnterWorldParkinglot()
-    {
-        LoadingScreenSetActive();
-
-        scenesLoading.Add(SceneManager.UnloadSceneAsync((int)SceneIndexes.World_SchoolOutdoor));
-        scenesLoading.Add(SceneManager.LoadSceneAsync((int)SceneIndexes.World_Parkinglot, LoadSceneMode.Additive));
-
-        StartCoroutine(GetSceneLoadProgress());
-    }
-
-    float totalSceneProgress;
-    public IEnumerator GetSceneLoadProgress()
-    {
-        for(int i = 0; i < scenesLoading.Count; i++)
+        for (int i = 0; i < scenesLoading.Count; i++)
         {
             while (!scenesLoading[i].isDone)
             {
                 totalSceneProgress = 0;
 
-                foreach(AsyncOperation operation in scenesLoading)
+                foreach (AsyncOperation operation in scenesLoading)
                 {
                     totalSceneProgress += operation.progress;
                 }
+
                 totalSceneProgress = (totalSceneProgress / scenesLoading.Count) * 100;
                 progressBar.value = Mathf.RoundToInt(totalSceneProgress);
 
                 yield return null;
             }
         }
+
+        scenesLoading.Clear();
 
         yield return new WaitForSeconds(1f);
         yield return StartCoroutine(FadeOutLoadingScreen());
@@ -121,24 +95,11 @@ public class GameManager : MonoBehaviour
     private void LoadingScreenSetActive()
     {
         loadingScreen.gameObject.SetActive(true);
-        CanvasGroup canvasGroup = loadingScreen.GetComponent<CanvasGroup>();
-
-        if (canvasGroup == null)
-        {
-            canvasGroup = loadingScreen.gameObject.AddComponent<CanvasGroup>();
-        }
-
         canvasGroup.alpha = 1f;
     }
+
     private IEnumerator FadeOutLoadingScreen()
     {
-        CanvasGroup canvasGroup = loadingScreen.GetComponent<CanvasGroup>();
-
-        if (canvasGroup == null)
-        {
-            canvasGroup = loadingScreen.gameObject.AddComponent<CanvasGroup>();
-        }
-
         float fadeDuration = 1f;
         float timer = 0f;
 
@@ -148,8 +109,8 @@ public class GameManager : MonoBehaviour
             canvasGroup.alpha = Mathf.Lerp(1f, 0f, timer / fadeDuration);
             yield return null;
         }
-        canvasGroup.alpha = 0f;
 
+        canvasGroup.alpha = 0f;
         loadingScreen.gameObject.SetActive(false);
     }
 }

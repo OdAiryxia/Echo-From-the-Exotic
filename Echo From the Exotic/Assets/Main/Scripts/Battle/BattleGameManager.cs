@@ -214,6 +214,11 @@ public class BattleGameManager : MonoBehaviour
             UnitActionSystem.instance.playerOutline = target.unitObject.GetComponent<Outline>();
             UnitActionSystem.instance.playerOutline.OutlineMode = Outline.Mode.OutlineAll;
 
+            UnitActionSystem.instance.enemyOutline.OutlineMode = Outline.Mode.OutlineHidden;
+            UnitActionSystem.instance.selectedEnemyUnit = enemyUnit;
+            UnitActionSystem.instance.enemyOutline = enemyUnit.unitObject.GetComponent<Outline>();
+            UnitActionSystem.instance.enemyOutline.OutlineMode = Outline.Mode.OutlineAll;
+
             enemyUnit.PerformAttack(); // 執行攻擊
         }
     }
@@ -267,13 +272,6 @@ public class BattleGameManager : MonoBehaviour
     private IEnumerator ExitBattle()
     {
         yield return new WaitForSeconds(3);
-        if (battleScene == BattleScene.SchoolOutdoor)
-        {
-            GameManager.instance.LoadWorldSchoolOutdoor();
-        }
-        else if (battleScene == BattleScene.Parkinglot)
-        {
-            GameManager.instance.LoadWorldParkinglot();
-        }
+        GameManager.instance.LoadScene(GameManager.instance.previousWorldScene);
     }
 }

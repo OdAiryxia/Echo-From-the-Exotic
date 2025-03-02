@@ -27,11 +27,11 @@ public class BattleTrigger : MonoBehaviour
 
         if (battleScene == BattleScene.SchoolOutdoor)
         {
-            GameManager.instance.LoadBattleSchoolOutdoor();
+            GameManager.instance.LoadBattleScene(SceneIndexes.Battlefield_SchoolOutdoor);
         }
         else if (battleScene == BattleScene.Parkinglot)
         {
-            GameManager.instance.LoadBattleParkinglot();
+            GameManager.instance.LoadBattleScene(SceneIndexes.Battlefield_Parkinglot);
         }
     }
 }

@@ -11,7 +11,7 @@ public class EnterParkinglot : MonoBehaviour, IInteractable
     {
         InteractorDialog.instance.StartTyping("停車場");
 
-        GameManager.instance.EnterWorldParkinglot();
+        GameManager.instance.LoadScene(SceneIndexes.World_Parkinglot);
         return true;
     }
 }

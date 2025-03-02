@@ -7,35 +7,46 @@ public class TestManager : MonoBehaviour
 {
     [SerializeField] private bool UI;
     [SerializeField] private bool PersistentScene;
-    [SerializeField] private bool reEnterGame;
 
-    [SerializeField] private GameObject player;
+    [SerializeField] private SceneIndexes currentWorldScene;
+
+    private bool prologuePlayed = false;
     void Awake()
     {
-        Debug();
+
+        prologuePlayed = PlayerPrefs.GetInt("ProloguePlayed", 0) == 1;
+        StartCoroutine(Debug());
+        if (prologuePlayed == false)
+        {
+            ProgressManager.instance.StartDialogue(0);
+        }
     }
 
-    void Debug()
+    IEnumerator Debug()
     {
         if (UI)
         {
             if (!SceneManager.GetSceneByBuildIndex((int)SceneIndexes.UI).isLoaded)
             {
-                SceneManager.LoadSceneAsync((int)SceneIndexes.UI, LoadSceneMode.Additive);
+                AsyncOperation loadUI = SceneManager.LoadSceneAsync((int)SceneIndexes.UI, LoadSceneMode.Additive);
+                while (!loadUI.isDone) // 等待場景完全載入
+                {
+                    yield return null;
+                }
             }
         }
 
         if (PersistentScene)
         {
-            // 確保 PersistentScene 沒有載入才 LoadSceneAsync
             if (!SceneManager.GetSceneByBuildIndex((int)SceneIndexes.PersistentScene).isLoaded)
             {
-                SceneManager.LoadSceneAsync((int)SceneIndexes.PersistentScene, LoadSceneMode.Additive);
-            }
+                AsyncOperation loadPersistent = SceneManager.LoadSceneAsync((int)SceneIndexes.PersistentScene, LoadSceneMode.Additive);
+                while (!loadPersistent.isDone) // 等待場景完全載入
+                {
+                    yield return null;
+                }
 
-            if (reEnterGame)
-            {
-                GameManager.instance.reEnterGame = reEnterGame;
+                GameManager.instance.currentWorldScene = currentWorldScene;
             }
         }
     }

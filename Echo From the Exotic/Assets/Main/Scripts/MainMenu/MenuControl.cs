@@ -9,6 +9,8 @@ public class MenuControl : MonoBehaviour
     [SerializeField] private Button creditButton;
     [SerializeField] private Button exitButton;
 
+    [SerializeField] private ModalWindowTemplate[] modalWindowTemplates;
+
     void Awake()
     {
         logoButton.onClick.AddListener(OnLogoButtonClicked);
@@ -19,7 +21,7 @@ public class MenuControl : MonoBehaviour
 
     private void OnLogoButtonClicked()
     {
-        GameManager.instance.EnterGame();
+        GameManager.instance.LoadScene(SceneIndexes.World_SchoolOutdoor);
     }
 
     private void OnSettingButtonClicked()
@@ -29,12 +31,45 @@ public class MenuControl : MonoBehaviour
 
     private void OnCreditButtonClicked()
     {
-
+        currentIndex = 0; // 重置索引
+        ShowCurrentModal();
     }
 
     private void OnExitButtonClicked()
     {
         Debug.Log("Quit");
         Application.Quit();
+    }
+
+    private int currentIndex = 0;
+    private void ShowCurrentModal()
+    {
+        if (currentIndex >= modalWindowTemplates.Length)
+        {
+            ModalWindowManager.instance.Close();
+            return;
+        }
+
+        ModalWindowTemplate currentTemplate = modalWindowTemplates[currentIndex];
+
+        ModalWindowManager.instance.ShowVertical(
+            currentTemplate.title,
+            currentTemplate.image,
+            currentTemplate.context,
+            currentTemplate.confirmText, () =>
+            {
+                currentIndex++;
+                ModalWindowManager.instance.Close();
+                ShowCurrentModal(); // 顯示下一個
+            },
+            currentTemplate.declineText, () =>
+            {
+                ModalWindowManager.instance.Close();
+            },
+            currentTemplate.alternateText, () =>
+            {
+                ModalWindowManager.instance.Close();
+            }
+        );
     }
 }
