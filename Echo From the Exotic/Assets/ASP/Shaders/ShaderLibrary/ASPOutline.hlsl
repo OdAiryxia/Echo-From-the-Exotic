@@ -64,7 +64,7 @@ float4 OutlineFrag(Varyings IN) : SV_Target
 {
     
     float ditherOut = 1;
-    Unity_Dither((1.0 - _Dithering), IN.positionSS / IN.positionSS.w, _ScreenParams.xy, _DitherTexelSize, ditherOut);
+    Unity_Dither((1.0 - _Dithering), IN.positionSS.xy / IN.positionSS.w, _ScreenParams.xy, _DitherTexelSize, ditherOut);
     clip(ditherOut);
     if(_OutlineWidth <= 0)
     {

@@ -1,5 +1,5 @@
-﻿[LockButton]
-[ui_image,black_image,Images\black_image,0,0,default,uiImageFadeIn_1]
+﻿[ui_image,black_image,Images\black_image,0,0,default,uiImageFadeIn_0]
+[LockButton]
 [show]
 "當初早該想到，[wait,1000]那些生物早已隨著裂縫滲入了這個世界"[w]
 [hide,1]

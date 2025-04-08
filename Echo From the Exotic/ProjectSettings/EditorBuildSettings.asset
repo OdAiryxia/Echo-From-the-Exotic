@@ -6,25 +6,61 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Main/Scenes/PersistentScene.unity
-    guid: d47abce6a2728a848a949e357bfa1f9f
+    path: Assets/Main/AllScenes/Scenes/PersistentScene.unity
+    guid: 2e71fa65b1947184d97861f79a831f86
   - enabled: 1
-    path: Assets/Main/Scenes/UI.unity
-    guid: c1d727ec8fe78bc47b6202fa9af4fd45
+    path: Assets/Main/AllScenes/Scenes/TitleScreen.unity
+    guid: a17fc2d5a55afcf46bb39eb4b060404b
   - enabled: 1
-    path: Assets/Main/Scenes/TitleScreen.unity
-    guid: 30aa34b2582c2c744a958d6dc9e05023
+    path: Assets/Main/AllScenes/Scenes/UI.unity
+    guid: 99c9720ab356a0642a771bea13969a05
   - enabled: 1
-    path: Assets/Main/Scenes/World_SchoolOutdoor.unity
+    path: Assets/Main/AllScenes/battlefield_01_pool.unity
+    guid: 24686766d2da5244aa186c73e0f7ca23
+  - enabled: 1
+    path: Assets/Main/AllScenes/battlefield_01_square.unity
+    guid: bdc00c27914e9364e850daeeffbbf72c
+  - enabled: 1
+    path: Assets/Main/AllScenes/battlefield_02_parkinglot_1.unity
+    guid: 05dcc4dc12c49b4479a486355980eea3
+  - enabled: 1
+    path: Assets/Main/AllScenes/battlefield_02_parkinglot_2.unity
+    guid: f4302da70b16a5e49b9994af05df5109
+  - enabled: 1
+    path: Assets/Main/AllScenes/battlefield_02_parkinglot_3.unity
+    guid: 6b1642b9af84bae46be1dfa9d6481b07
+  - enabled: 1
+    path: Assets/Main/AllScenes/battlefield_03_lab.unity
+    guid: d6af4b3632e482b40a9ca2e3dd667c18
+  - enabled: 1
+    path: Assets/Main/AllScenes/world_01_classroom.unity
+    guid: e901c6f94846fa5498300c4fdd0b11ba
+  - enabled: 1
+    path: Assets/Main/AllScenes/world_01_equipmentroom.unity
+    guid: 717af045a341d1440b6b66617d13d140
+  - enabled: 1
+    path: Assets/Main/AllScenes/world_01_pool.unity
+    guid: 0bcb0f2f04ef6f545ac668c6e8953a15
+  - enabled: 1
+    path: Assets/Main/AllScenes/world_01_square.unity
     guid: 9fc0d4010bbf28b4594072e72b8655ab
   - enabled: 1
-    path: Assets/Main/Scenes/Battlefield_SchoolOutdoor.unity
-    guid: a59a3f51550bccf4eb4343cfdd636df4
+    path: Assets/Main/AllScenes/world_02_parkinglot_1.unity
+    guid: 20734a34d45161044b44b0be4f9f991f
   - enabled: 1
-    path: Assets/Main/Scenes/World_Parkinglot_1.unity
-    guid: 404be4ceb1cbbf64db03da57e8b2a2ad
+    path: Assets/Main/AllScenes/world_02_parkinglot_2.unity
+    guid: 22bbab4a7737f514587cabcc91d49d3c
   - enabled: 1
-    path: Assets/Main/Scenes/BattleGround_Parkinglot_1.unity
-    guid: 05dcc4dc12c49b4479a486355980eea3
+    path: Assets/Main/AllScenes/world_02_parkinglot_3.unity
+    guid: b1342637695049d47bdd0e37181d5e1d
+  - enabled: 1
+    path: Assets/Main/AllScenes/world_03_lab_1.unity
+    guid: fefd757b0358dcc4ebe1947d32c81ade
+  - enabled: 1
+    path: Assets/Main/AllScenes/world_03_lab_2.unity
+    guid: 7f105f04b8c36e24c971796f77d39da9
+  - enabled: 1
+    path: Assets/Main/AllScenes/world_03_lab_3.unity
+    guid: 671e6a1904cd2334a92343e3314d4342
   m_configObjects: {}
   m_UseUCBPForAssetBundles: 0

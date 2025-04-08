@@ -1,44 +1,33 @@
-using Flower;
+ï»¿using Flower;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class ProgressManager : MonoBehaviour
 {
-    FlowerSystem flowerSys;
     public static ProgressManager instance;
-
-    public int currentChapter = 0; // ·í«e³¹¸`
-
-    //private bool prologuePlayed = false;
-    public bool isStory = false;
+    private FlowerSystem flowerSys;
 
     void Awake()
     {
         if (instance == null)
         {
             instance = this;
+            DontDestroyOnLoad(this);
         }
         else
         {
             Destroy(gameObject);
         }
-
-        flowerSys = FlowerManager.Instance.CreateFlowerSystem("FlowerSystem", true);
-        flowerSys.textSpeed = 0.05f;
     }
 
     void Start()
     {
+        flowerSys = FlowerManager.Instance.CreateFlowerSystem("FlowerSystem", true);
+        flowerSys.textSpeed = 0.05f;
         flowerSys.SetScreenReference(1920, 1080);
         flowerSys.RegisterCommand("LockButton", LockButton);
         flowerSys.RegisterCommand("ReleaseButton", ReleaseButton);
-
-        //prologuePlayed = PlayerPrefs.GetInt("ProloguePlayed", 0) == 1;
-
-        PlayerPrefs.SetInt("CurrentChapter", 0);
-        PlayerPrefs.SetInt("ProloguePlayed", 0);
-
         flowerSys.SetupDialog();
         flowerSys.SetupUIStage();
         flowerSys.ReadTextFromResource("hide");
@@ -53,16 +42,27 @@ public class ProgressManager : MonoBehaviour
         }
     }
 
+    #region Commands
+    void LockButton(List<string> _params)
+    {
+        isStory = true;
+    }
 
-    public void StartDialogue(int chapter)
+    void ReleaseButton(List<string> _params)
+    {
+        isStory = false;
+    }
+    #endregion
+
+    public int currentChapter = 0;
+    public bool isStory = false;
+
+    public void StartChapter(int chapter)
     {
         switch (chapter)
         {
             case 0:
                 flowerSys.ReadTextFromResource("prologue");
-                Debug.Log("a");
-                PlayerPrefs.SetInt("ProloguePlayed", 1);
-                PlayerPrefs.Save();
                 break;
             case 1:
                 break;
@@ -73,18 +73,6 @@ public class ProgressManager : MonoBehaviour
 
     public void NextChapter()
     {
-        currentChapter++;
-        PlayerPrefs.SetInt("CurrentChapter", currentChapter);
-        PlayerPrefs.Save();
-    }
-
-    private void LockButton(List<string> _params)
-    {
-        isStory = true;
-    }
-
-    private void ReleaseButton(List<string> _params)
-    {
-        isStory = false;
+        currentChapter++;;
     }
 }

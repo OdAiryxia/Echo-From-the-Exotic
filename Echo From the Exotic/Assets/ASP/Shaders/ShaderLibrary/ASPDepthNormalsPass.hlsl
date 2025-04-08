@@ -77,7 +77,7 @@ void DepthNormalsFragment(
 
     #if defined(_ALPHATEST_ON)
         float ditherOut = 1;
-        Unity_Dither((1.0 - _Dithering), input.positionSS / input.positionSS.w, _ScreenParams.xy, _DitherTexelSize, ditherOut);
+        Unity_Dither((1.0 - _Dithering), input.positionSS.xy / input.positionSS.w, _ScreenParams.xy, _DitherTexelSize, ditherOut);
         clip(ditherOut);
         Alpha(SampleAlbedoAlpha(input.uv, TEXTURE2D_ARGS(_BaseMap, sampler_BaseMap)).a, _BaseColor, _Cutoff);
         float clipMapValue = SAMPLE_TEXTURE2D(_ClipMap, sampler_ClipMap, input.uv.xy).r;

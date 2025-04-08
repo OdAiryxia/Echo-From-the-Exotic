@@ -13,7 +13,7 @@
 
 #define ASP_OFFSET_SHADOW_EYE_BIAS  0.001
 
-void SetupSurround8UVs(float2 uvCenter, inout float2 uvs[8], float uvStep)
+void SetupSurround8UVs(float2 uvCenter, inout float2 uvs[8], float2 uvStep)
 {
     uvs[0] = uvCenter + uvStep * float2(-1, 1);
     uvs[1] = uvCenter + uvStep * float2(0, 1);
@@ -25,7 +25,7 @@ void SetupSurround8UVs(float2 uvCenter, inout float2 uvs[8], float uvStep)
     uvs[7] = uvCenter + uvStep * float2(1, -1);
 }
 
-void SetupSurroundCrossUVs(float2 uvCenter, inout float2 uvs[4], float uvStep)
+void SetupSurroundCrossUVs(float2 uvCenter, inout float2 uvs[4], float2 uvStep)
 {
     uvs[0] = uvCenter + uvStep * float2(-1, 1);
     uvs[1] = uvCenter + uvStep * float2(-1, -1);
@@ -33,7 +33,7 @@ void SetupSurroundCrossUVs(float2 uvCenter, inout float2 uvs[4], float uvStep)
     uvs[3] = uvCenter + uvStep * float2(1, -1);
 }
 
-void SetupSurroundLRTDUVs(float2 uvCenter, inout float2 uvs[4], float uvStep)
+void SetupSurroundLRTDUVs(float2 uvCenter, inout float2 uvs[4], float2 uvStep)
 {
     uvs[0] = uvCenter + uvStep * float2(-1, 0);
     uvs[1] = uvCenter + uvStep * float2(1, 0);

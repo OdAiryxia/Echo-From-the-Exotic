@@ -77,7 +77,7 @@ half4 MaterialPassFragment(Varyings IN) : SV_TARGET
     half3 albedoColor = SAMPLE_TEXTURE2D_X(_BaseMap, sampler_BaseMap, IN.uv.xy).rgb;
     #if defined(_ALPHATEST_ON)
     float ditherOut = 1;
-    Unity_Dither((1.0 - _Dithering), IN.positionSS / IN.positionSS.w, _ScreenParams.xy, _DitherTexelSize, ditherOut);
+    Unity_Dither((1.0 - _Dithering), IN.positionSS.xy / IN.positionSS.w, _ScreenParams.xy, _DitherTexelSize, ditherOut);
     clip(ditherOut);
     
     half alpha = _BaseColor.a * SAMPLE_TEXTURE2D(_BaseMap, sampler_BaseMap, IN.uv.xy).a;

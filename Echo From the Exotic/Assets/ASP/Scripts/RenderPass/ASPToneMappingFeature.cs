@@ -81,10 +81,12 @@ namespace ASP
                 desc.colorFormat = renderingData.cameraData.cameraTargetDescriptor.colorFormat;
                 desc.msaaSamples = 1;
                 desc.depthBufferBits = (int)DepthBits.None;
-                if (m_copiedColor == null)
+                if (m_copiedColor != null)
                 {
-                    m_copiedColor = RenderTexture.GetTemporary(desc);
+                    RenderTexture.ReleaseTemporary(m_copiedColor);
+                    m_copiedColor = null;
                 }
+                m_copiedColor = RenderTexture.GetTemporary(desc);
 
                 ConfigureTarget(m_copiedColor);
                 ConfigureClear(ClearFlag.Color, Color.white);
@@ -94,7 +96,6 @@ namespace ASP
 
             public void Dispose()
             {
-                m_copiedColor?.Release();
             }
 
 

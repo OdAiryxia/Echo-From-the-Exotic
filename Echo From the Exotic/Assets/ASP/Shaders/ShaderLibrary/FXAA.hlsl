@@ -16,13 +16,13 @@ half ApplyOutlineFXAA(TEXTURE2D_X(_baseMap), float2 positionSS, float2 screenSca
     half3 colorCenter = 1.0 - SAMPLE_TEXTURE2D_X(_baseMap, sampler_LinearClamp, positionSS).rrr;
 
     // Luma at the current fragment
-    float lumaM = (colorCenter);
+    float lumaM = dot(colorCenter, colorCenter);
 
     // Luma at the four direct neighbours of the current fragment.
-    float lumaS = (1.0 - SAMPLE_TEXTURE2D_X(_baseMap, sampler_LinearClamp, positionSS + float2(0,-1) * texelSize).rrr);
-    float lumaN = (1.0 - SAMPLE_TEXTURE2D_X(_baseMap, sampler_LinearClamp, positionSS + float2(0,1) * texelSize).rrr);
-    float lumaW = (1.0 - SAMPLE_TEXTURE2D_X(_baseMap, sampler_LinearClamp, positionSS + float2(-1,0) * texelSize).rrr);
-    float lumaE = (1.0 - SAMPLE_TEXTURE2D_X(_baseMap, sampler_LinearClamp, positionSS + float2(1,0) * texelSize).rrr);
+    float lumaS = (1.0 - SAMPLE_TEXTURE2D_X(_baseMap, sampler_LinearClamp, positionSS + float2(0,-1) * texelSize).r);
+    float lumaN = (1.0 - SAMPLE_TEXTURE2D_X(_baseMap, sampler_LinearClamp, positionSS + float2(0,1) * texelSize).r);
+    float lumaW = (1.0 - SAMPLE_TEXTURE2D_X(_baseMap, sampler_LinearClamp, positionSS + float2(-1,0) * texelSize).r);
+    float lumaE = (1.0 - SAMPLE_TEXTURE2D_X(_baseMap, sampler_LinearClamp, positionSS + float2(1,0) * texelSize).r);
 
     // Find the maximum and minimum luma around the current fragment.
     float lumaMin = min(lumaM, min(min(lumaS, lumaN), min(lumaW, lumaE)));
@@ -38,10 +38,10 @@ half ApplyOutlineFXAA(TEXTURE2D_X(_baseMap), float2 positionSS, float2 screenSca
     }
 
     // Query the 4 remaining corners lumas.
-    float lumaSW = (1.0 - SAMPLE_TEXTURE2D(_baseMap, sampler_LinearClamp, positionSS + float2(-1,-1) * texelSize).rrr);
-    float lumaNE = (1.0 - SAMPLE_TEXTURE2D(_baseMap, sampler_LinearClamp, positionSS + float2(1,1) * texelSize).rrr);
-    float lumaNW = (1.0 - SAMPLE_TEXTURE2D(_baseMap, sampler_LinearClamp, positionSS + float2(-1,1) * texelSize).rrr);
-    float lumaSE = (1.0 - SAMPLE_TEXTURE2D(_baseMap, sampler_LinearClamp, positionSS + float2(1,-1) * texelSize).rrr);
+    float lumaSW = (1.0 - SAMPLE_TEXTURE2D(_baseMap, sampler_LinearClamp, positionSS + float2(-1,-1) * texelSize).r);
+    float lumaNE = (1.0 - SAMPLE_TEXTURE2D(_baseMap, sampler_LinearClamp, positionSS + float2(1,1) * texelSize).r);
+    float lumaNW = (1.0 - SAMPLE_TEXTURE2D(_baseMap, sampler_LinearClamp, positionSS + float2(-1,1) * texelSize).r);
+    float lumaSE = (1.0 - SAMPLE_TEXTURE2D(_baseMap, sampler_LinearClamp, positionSS + float2(1,-1) * texelSize).r);
 
     // Combine the four edges lumas (using intermediary variables for future computations with the same values).
     float lumaDownUp = lumaS + lumaN;
@@ -126,7 +126,7 @@ half ApplyOutlineFXAA(TEXTURE2D_X(_baseMap), float2 positionSS, float2 screenSca
         if (!reached1)
         {
             uv1 -= offset * edgeSearchSteps[i];
-            lumaEnd1 = (1.0 - SAMPLE_TEXTURE2D(_baseMap, sampler_LinearClamp, uv1).rrr);
+            lumaEnd1 = (1.0 - SAMPLE_TEXTURE2D(_baseMap, sampler_LinearClamp, uv1).r);
             lumaEnd1 = lumaEnd1 - lumaLocalAverage;
             reached1 = abs(lumaEnd1) >= searchThreashold;
         }
@@ -134,7 +134,7 @@ half ApplyOutlineFXAA(TEXTURE2D_X(_baseMap), float2 positionSS, float2 screenSca
         if (!reached2)
         {
             uv2 += offset * edgeSearchSteps[i];
-            lumaEnd2 = (1.0 - SAMPLE_TEXTURE2D(_baseMap, sampler_LinearClamp, uv2).rrr);
+            lumaEnd2 = (1.0 - SAMPLE_TEXTURE2D(_baseMap, sampler_LinearClamp, uv2).r);
             lumaEnd2 = lumaEnd2 - lumaLocalAverage;
             reached2 = abs(lumaEnd2) >= searchThreashold;
         }

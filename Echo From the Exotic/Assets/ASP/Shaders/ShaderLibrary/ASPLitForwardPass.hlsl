@@ -261,7 +261,7 @@ real4 ASPLitFrag(Varyings IN, bool IsFacing : SV_IsFrontFace) : SV_Target
     //apply dither effect if alpha clip enabled
     #ifdef _ALPHATEST_ON
     float ditherOut = 1;
-    Unity_Dither((1.0 - _Dithering), IN.positionSS / IN.positionSS.w, _ScreenParams.xy, _DitherTexelSize, ditherOut);
+    Unity_Dither((1.0 - _Dithering), IN.positionSS.xy / IN.positionSS.w, _ScreenParams.xy, _DitherTexelSize, ditherOut);
     clip(ditherOut);
     
     half alpha = _BaseColor.a * SAMPLE_TEXTURE2D(_BaseMap, sampler_BaseMap, IN.uv.xy).a;

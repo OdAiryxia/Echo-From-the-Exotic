@@ -1227,8 +1227,13 @@ namespace ASP
                 var renderingData = frameData.Get<UniversalRenderingData>();
                 var lightData = frameData.Get<UniversalLightData>();
                 var universalShadowData = frameData.Get<UniversalShadowData>();
+                //prevent null cases of lighting
                 if(lightData.mainLightIndex < 0)
                     return;
+                if(lightData.mainLightIndex >= universalShadowData.bias.Count)
+                    return;
+                //guard end
+                
                 var isMainLightShadowReady = SetupASPMainLightShadowForRenderGraph(renderGraph, frameData);
                 if (!isMainLightShadowReady)
                 {

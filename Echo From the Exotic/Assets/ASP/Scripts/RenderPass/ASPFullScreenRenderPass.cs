@@ -18,7 +18,7 @@ namespace ASP
         private int m_PassIndex;
         private bool m_CopyActiveColor;
         private bool m_BindDepthStencilAttachment;
-        private RenderTexture m_CopiedColor;
+        private RenderTexture m_copiedColor;
 
         private static MaterialPropertyBlock s_SharedPropertyBlock = new MaterialPropertyBlock();
 
@@ -45,11 +45,13 @@ namespace ASP
             desc.colorFormat = RenderTextureFormat.ARGB32;
             desc.msaaSamples = 1;
             desc.depthBufferBits = (int)DepthBits.None;
-                
-            if (m_CopiedColor == null)
+               
+            if (m_copiedColor != null)
             {
-                m_CopiedColor = RenderTexture.GetTemporary(desc);
+                RenderTexture.ReleaseTemporary(m_copiedColor);
+                m_copiedColor = null;
             }
+            m_copiedColor = RenderTexture.GetTemporary(desc);
         }
 
         public void Dispose()
@@ -58,10 +60,10 @@ namespace ASP
         
         public override void OnCameraCleanup(CommandBuffer cmd)
         {
-            if (m_CopiedColor != null)
+            if (m_copiedColor != null)
             {
-                RenderTexture.ReleaseTemporary(m_CopiedColor);
-                m_CopiedColor = null;
+                RenderTexture.ReleaseTemporary(m_copiedColor);
+                m_copiedColor = null;
             }
         }
         
@@ -99,8 +101,8 @@ namespace ASP
             {
                 if (m_CopyActiveColor)
                 {
-                    CoreUtils.SetRenderTarget(cmd, m_CopiedColor);
-                    ExecuteCopyColorPass(cmd, cameraData.renderer.cameraColorTarget, m_CopiedColor);
+                    CoreUtils.SetRenderTarget(cmd, m_copiedColor);
+                    ExecuteCopyColorPass(cmd, cameraData.renderer.cameraColorTarget, m_copiedColor);
                 }
 
                 if (m_BindDepthStencilAttachment)
@@ -114,7 +116,7 @@ namespace ASP
                 }
 
                 m_Material.SetVector("_BlitScaleBias", new Vector4(1,1,0,0));
-                m_Material.SetTexture("_BaseMap", m_CopiedColor);
+                m_Material.SetTexture("_BaseMap", m_copiedColor);
                 DrawQuad(cmd, m_Material, 0);
             }
 

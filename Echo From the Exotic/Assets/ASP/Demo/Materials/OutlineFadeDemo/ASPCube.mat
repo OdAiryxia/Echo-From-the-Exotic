@@ -109,7 +109,6 @@ Material:
     - _FOVShiftX: 0
     - _FaceShadowMapPow: 0.2
     - _FaceShadowSmoothness: 0
-    - _FakeLightIntensity: 0
     - _FlattenAdditionalLighting: 0
     - _Group0: 1
     - _Group1: 0
@@ -132,7 +131,6 @@ Material:
     - _MaterialID: 1
     - _OffsetShadowDistance: 15
     - _OutlineWidth: 16.93
-    - _OverrideLightColorIntensityToggle: 0
     - _OverrideLightDirToggle: 0
     - _OverrideZTest: 0
     - _PBRInfluenceDirectLighting: 0
@@ -148,7 +146,6 @@ Material:
     - _RimLightOverShadow: 1
     - _RimLightSmoothness: 0.2
     - _RimLightStrength: 0.35
-    - _ScaleAsScreenSpaceOutline: 0
     - _ShadowColorMode: 0
     - _SpecularFalloff: 0.5
     - _SpecularHighlights: 0
@@ -165,7 +162,6 @@ Material:
     - _ZWrite: 1
     - _style: 1
     m_Colors:
-    - _AlphaClipUVCtrl: {r: 1, g: 0, b: 0, a: 0}
     - _BaseColor: {r: 0.4716981, g: 0.4716981, b: 0.4716981, a: 1}
     - _CharacterCenterWS: {r: -1.5, g: 1, b: -7.5, a: 0}
     - _DepthRimLightColor: {r: 1, g: 1, b: 1, a: 1}
@@ -173,7 +169,6 @@ Material:
     - _FaceFrontDirection: {r: 0.50000006, g: -0.7071069, b: 0.49999994, a: 0}
     - _FaceRightDirection: {r: 0.85355335, g: 0.50000006, b: -0.14644665, a: 0}
     - _FaceUVCtrl: {r: 0, g: 1, b: 0, a: 0}
-    - _FakeLightColor: {r: 0, g: 0, b: 0, a: 0}
     - _FakeLightEuler: {r: 180, g: 0, b: 0, a: 0}
     - _HairLightColor: {r: 1, g: 1, b: 1, a: 1}
     - _HairUVCtrl: {r: 0, g: 0, b: 1, a: 0}
@@ -182,11 +177,8 @@ Material:
     - _OverrideGIColor: {r: 0, g: 0, b: 0, a: 1}
     - _ReceivedShadowColor: {r: 0.8, g: 0.8, b: 0.8, a: 1}
     - _RimLightColor: {r: 1, g: 1, b: 1, a: 1}
-    - _RimMaskUVCtrl: {r: 1, g: 0, b: 0, a: 0}
-    - _SpecUVCtrl: {r: 1, g: 0, b: 0, a: 0}
     - _SpecularColor: {r: 0.2, g: 0.2, b: 0.2, a: 1}
     - _SpecularFallOffColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
-    - _SurfaceUVCtrl: {r: 1, g: 0, b: 0, a: 0}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
 --- !u!114 &9188368709655551925

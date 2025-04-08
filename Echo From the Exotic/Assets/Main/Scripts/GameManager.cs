@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using Cinemachine;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -8,13 +9,7 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager instance;
 
-    [SerializeField] private GameObject loadingScreen;
-    [SerializeField] private CanvasGroup canvasGroup;
-    [SerializeField] private Image loadingImage;
-    [SerializeField] private Slider progressBar;
-
-    List<AsyncOperation> scenesLoading = new List<AsyncOperation>();
-
+    #region Initialize
     void Awake()
     {
         if (instance == null)
@@ -26,91 +21,163 @@ public class GameManager : MonoBehaviour
         {
             Destroy(gameObject);
         }
-
-        Screen.SetResolution(1920, 1080, FullScreenMode.FullScreenWindow);
     }
 
     void Start()
     {
-        if (!SceneManager.GetSceneByBuildIndex((int)SceneIndexes.World_SchoolOutdoor).isLoaded)
+        if (!SceneManager.GetSceneByBuildIndex((int)SceneIndexes.UI).isLoaded)
         {
-            SceneManager.LoadSceneAsync((int)SceneIndexes.TitleScreen, LoadSceneMode.Additive);
             SceneManager.LoadSceneAsync((int)SceneIndexes.UI, LoadSceneMode.Additive);
-            currentWorldScene = SceneIndexes.TitleScreen;
-        }
-    }
-
-    [HideInInspector] public SceneIndexes currentWorldScene;
-    [HideInInspector] public SceneIndexes previousWorldScene;
-
-    public void LoadScene(SceneIndexes newScene)
-    {
-        if (currentWorldScene != newScene)
-        {
-            scenesLoading.Add(SceneManager.UnloadSceneAsync((int)currentWorldScene));
         }
 
-        currentWorldScene = newScene;
-        scenesLoading.Add(SceneManager.LoadSceneAsync((int)newScene, LoadSceneMode.Additive));
-
-        StartCoroutine(GetSceneLoadProgress());
+        SceneManager.LoadSceneAsync((int)SceneIndexes.TitleScreen, LoadSceneMode.Additive);
+        currentWorld = (int)SceneIndexes.TitleScreen;
+        Initialize();
     }
 
-    public void LoadBattleScene(SceneIndexes battleScene)
+    void Initialize()
     {
-        previousWorldScene = currentWorldScene;
-        LoadScene(battleScene);
+        Screen.SetResolution(1920, 1080, FullScreenMode.FullScreenWindow);
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
     }
+    #endregion
 
-    private IEnumerator GetSceneLoadProgress()
+    [HideInInspector] public int currentWorld;
+    [HideInInspector] public int previousWorld;
+
+    public PlayerData playerData = new PlayerData();
+    private GameObject currentPlayer;
+
+    private List<AsyncOperation> scenesLoading = new List<AsyncOperation>();
+
+    void LoadScene(int scene)
     {
-        LoadingScreenSetActive();
-
-        float totalSceneProgress = 0;
-
-        for (int i = 0; i < scenesLoading.Count; i++)
+        BlackScreenManager.instance.blackScreen.color = new Color(BlackScreenManager.instance.blackScreen.color.r, BlackScreenManager.instance.blackScreen.color.g, BlackScreenManager.instance.blackScreen.color.b, 1f);
+        if (currentWorld != scene)
         {
-            while (!scenesLoading[i].isDone)
+            AsyncOperation unloadOp = SceneManager.UnloadSceneAsync(currentWorld);
+            if (unloadOp != null)
             {
-                totalSceneProgress = 0;
-
-                foreach (AsyncOperation operation in scenesLoading)
-                {
-                    totalSceneProgress += operation.progress;
-                }
-
-                totalSceneProgress = (totalSceneProgress / scenesLoading.Count) * 100;
-                progressBar.value = Mathf.RoundToInt(totalSceneProgress);
-
-                yield return null;
+                scenesLoading.Add(unloadOp);
             }
         }
 
-        scenesLoading.Clear();
+        currentWorld = scene;
 
-        yield return new WaitForSeconds(1f);
-        yield return StartCoroutine(FadeOutLoadingScreen());
-    }
-
-    private void LoadingScreenSetActive()
-    {
-        loadingScreen.gameObject.SetActive(true);
-        canvasGroup.alpha = 1f;
-    }
-
-    private IEnumerator FadeOutLoadingScreen()
-    {
-        float fadeDuration = 1f;
-        float timer = 0f;
-
-        while (timer < fadeDuration)
+        AsyncOperation loadOp = SceneManager.LoadSceneAsync(scene, LoadSceneMode.Additive);
+        if (loadOp != null)
         {
-            timer += Time.deltaTime;
-            canvasGroup.alpha = Mathf.Lerp(1f, 0f, timer / fadeDuration);
-            yield return null;
+            scenesLoading.Add(loadOp);
+        }
+    }
+
+
+    public void LoadWorld(WorldIndexes scene, string spawnpointID)
+    {
+        if (currentPlayer != null)
+        {
+            playerData.scene = currentWorld;
+            playerData.position = currentPlayer.transform.position;
+            playerData.rotation = currentPlayer.transform.rotation;
         }
 
-        canvasGroup.alpha = 0f;
-        loadingScreen.gameObject.SetActive(false);
+        LoadScene((int)scene);
+        StartCoroutine(SpawnPlayer(spawnpointID));
+    }
+
+    public void LoadBattle(BattlefieldIndexes scene)
+    {
+        previousWorld = currentWorld;
+        if (currentPlayer != null)
+        {
+            playerData.position = currentPlayer.transform.position;
+            playerData.rotation = currentPlayer.transform.rotation;
+        }
+
+        LoadScene((int)scene);
+        StartCoroutine(WaitForBattleLoad());
+    }
+
+    IEnumerator SpawnPlayer(string spawnpointID)
+    {
+        if (scenesLoading.Count > 0)
+        {
+            while (!scenesLoading.TrueForAll(op => op != null && op.isDone))
+                yield return null;
+        }
+
+        yield return new WaitForSeconds(0.1f);
+
+        for (int i = 0; i < 10; i++)
+        {
+            CharacterMovement[] players = FindObjectsByType<CharacterMovement>(FindObjectsSortMode.None);
+            if (players.Length > 0)
+            {
+                currentPlayer = players[0].gameObject;
+                break;
+            }
+            yield return new WaitForSeconds(0.1f); // 等待 0.1 秒再試
+        }
+
+        if (currentPlayer == null)
+        {
+            Debug.LogError("❌ SpawnPlayer 找不到玩家，請檢查場景是否正確生成角色！");
+            yield break;
+        }
+
+        yield return null;
+
+        bool positionSet = false;
+
+        for (int i = 0; i < 5; i++)
+        {
+            if (!string.IsNullOrEmpty(spawnpointID))
+            {
+                Spawnpoint[] spawnpoints = FindObjectsByType<Spawnpoint>(FindObjectsSortMode.None);
+                foreach (var sp in spawnpoints)
+                {
+                    if (sp.spawnpointID == spawnpointID)
+                    {
+                        currentPlayer.GetComponent<CharacterController>().enabled = false;
+                        currentPlayer.transform.position = sp.transform.position;
+                        currentPlayer.transform.rotation = sp.transform.rotation;
+                        currentPlayer.GetComponent<CharacterController>().enabled = true;
+                        positionSet = true;
+                        break;
+                    }
+                }
+            }
+            else if (playerData.scene == currentWorld)
+            {
+                currentPlayer.transform.position = playerData.position;
+                currentPlayer.transform.rotation = playerData.rotation;
+                positionSet = true;
+            }
+            else
+            {
+                currentPlayer.transform.position = Vector3.zero;
+                positionSet = true;
+            }
+
+            if (positionSet) break;
+            yield return new WaitForSeconds(0.1f);
+        }
+
+        if (!positionSet)
+        {
+            Debug.LogError("❌ 玩家位置未能成功設置！");
+        }
+
+        BlackScreenManager.instance.StartCoroutine(BlackScreenManager.instance.FadeOut());
+    }
+
+    IEnumerator WaitForBattleLoad()
+    {
+        while (!scenesLoading.TrueForAll(op => op.isDone))
+            yield return null;
+
+        Debug.Log("戰鬥場景載入完成！");
+        BlackScreenManager.instance.StartCoroutine(BlackScreenManager.instance.FadeOut());
     }
 }

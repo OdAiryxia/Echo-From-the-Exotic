@@ -63,7 +63,7 @@ namespace ASP
             private Material m_Material;
             private bool m_CopyActiveColor;
             private bool m_BindDepthStencilAttachment;
-            private RenderTexture m_CopiedColor;
+            private RenderTexture m_copiedColor;
             private RenderTexture m_outputRT;
             private bool m_UseHalfScale;
 
@@ -94,11 +94,14 @@ namespace ASP
                 desc.colorFormat = RenderTextureFormat.ARGB32;
                 desc.msaaSamples = 1;
                 desc.depthBufferBits = (int)DepthBits.None;
-                
-                if (m_CopiedColor == null)
+
+                if (m_copiedColor != null)
                 {
-                    m_CopiedColor = RenderTexture.GetTemporary(desc);
+                    RenderTexture.ReleaseTemporary(m_copiedColor);
+                    m_copiedColor = null;
                 }
+                
+                m_copiedColor = RenderTexture.GetTemporary(desc);
                 
                 if (m_OutputTextureName != string.Empty)
                 {
@@ -111,7 +114,7 @@ namespace ASP
                        desc.width = width;
                        desc.height = height;
                
-                   if (m_CopiedColor == null)
+                   if (m_copiedColor == null)
                    {
                        m_outputRT = RenderTexture.GetTemporary(desc);
                    }
@@ -119,7 +122,7 @@ namespace ASP
                 }
                 else
                 {
-                    ConfigureTarget(m_CopiedColor);
+                    ConfigureTarget(m_copiedColor);
                 }
 
                 ConfigureClear(ClearFlag.Color, Color.white);
@@ -131,10 +134,10 @@ namespace ASP
             
             public override void OnCameraCleanup(CommandBuffer cmd)
             {
-                if (m_CopiedColor != null)
+                if (m_copiedColor != null)
                 {
-                    RenderTexture.ReleaseTemporary(m_CopiedColor);
-                    m_CopiedColor = null;
+                    RenderTexture.ReleaseTemporary(m_copiedColor);
+                    m_copiedColor = null;
                 }
                 
                 if (m_outputRT != null)
@@ -166,8 +169,8 @@ namespace ASP
                 {
                     if (m_CopyActiveColor)
                     {
-                        CoreUtils.SetRenderTarget(cmd, m_CopiedColor);
-                        Blit(cmd, cameraData.renderer.cameraColorTarget, m_CopiedColor);
+                        CoreUtils.SetRenderTarget(cmd, m_copiedColor);
+                        Blit(cmd, cameraData.renderer.cameraColorTarget, m_copiedColor);
                         
                     }
                     
@@ -188,7 +191,7 @@ namespace ASP
 
                     }
                     m_Material.SetVector("_BlitScaleBias", new Vector4(1,1,0,0));
-                    m_Material.SetTexture("_BaseMap", m_CopiedColor);
+                    m_Material.SetTexture("_BaseMap", m_copiedColor);
                     DrawQuad(cmd, m_Material, 0);
                     if (m_outputRT != null)
                     {

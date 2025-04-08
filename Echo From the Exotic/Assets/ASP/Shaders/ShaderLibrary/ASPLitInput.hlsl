@@ -18,6 +18,7 @@ TEXTURE2D(_HairHighlightMaskMap);    SAMPLER(sampler_HairHighlightMaskMap);
 
 #ifdef _MATCAP_HIGHLIGHT_MAP
 TEXTURE2D(_MatCapReflectionMap);     SAMPLER(sampler_MatCapReflectionMap);
+TEXTURE2D(_MatCapReflectionMaskMap);
 #endif
 
 #ifdef _STYLE_STYLIZEPBR

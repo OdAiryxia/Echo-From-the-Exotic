@@ -1,4 +1,4 @@
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
@@ -8,34 +8,39 @@ public class HealthBar : MonoBehaviour
     [SerializeField] private TextMeshPro unitNametag;
     [SerializeField] private TextMeshPro unitHealth;
 
-    public Slider healthSlider;
+    public Slider fillHealthSlider;
     public Slider easeHealthSlider;
 
     private float maxHealth = 100f;
     private float lerpSpeed = 0.025f;
 
-    private void Awake()
+    void Awake()
     {
         unitNametag.text = unit.unitName;
 
         maxHealth = unit.health;
-        healthSlider.maxValue = maxHealth;
+        fillHealthSlider.maxValue = maxHealth;
         easeHealthSlider.maxValue = maxHealth;
         unitHealth.text = unit.health + "/" + maxHealth;
     }
 
-    private void Update()
+    void Update()
     {
-        if (healthSlider.value != unit.health)
+        if (fillHealthSlider.value != unit.health)
         {
-            healthSlider.value = unit.health;
+            fillHealthSlider.value = unit.health;
         }
 
-        if (healthSlider.value != easeHealthSlider.value)
+        if (fillHealthSlider.value != easeHealthSlider.value)
         {
             easeHealthSlider.value = Mathf.Lerp(easeHealthSlider.value, unit.health, lerpSpeed);
         }
 
         unitHealth.text = unit.health + "/" + maxHealth;
+    }
+    void LateUpdate()
+    {
+        transform.LookAt(BattleManager.instance.mainCamera.transform);
+        transform.RotateAround(transform.position, transform.up, 180f);
     }
 }

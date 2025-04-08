@@ -1,96 +1,66 @@
 ﻿using Cinemachine;
 using System.Collections;
-using Unity.Mathematics;
-using Unity.VisualScripting;
+using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Rendering;
 using UnityEngine.UI;
 
 public class CharacterMovement : MonoBehaviour
 {
-    [SerializeField] private CharacterController controller;
-    [SerializeField] private CanvasGroup aimCanvas;
-    [SerializeField] private Image aimDot;
+    private CharacterController controller;
+    private Renderer[] playerRenderers;
 
     [SerializeField] private Camera mainCamera;
-    [SerializeField] private CinemachineFreeLook thirdPersonCamera;
-    [SerializeField] private CinemachineVirtualCamera aimCamera;
+    [SerializeField] private CinemachineFreeLook freeLookCamera;
+    [SerializeField] private CinemachineVirtualCamera virtualCamera;
+    [SerializeField] private CanvasGroup aimCanvas;
+    [SerializeField] private Image aimDot;
+    [SerializeField] private Volume aimVolume;
 
-    [SerializeField] private float moveSpeed = 50f;
+    [SerializeField] private float moveSpeed = 5f;
     [SerializeField] private float sprintMultiplier = 1.5f;
     [SerializeField] private float gravityMultiplier = 1f;
-    [SerializeField] private float renderDelay = 0.2f;
 
+    private CinemachineFreeLook.Orbit[] originalOrbits;
+    private float zoomPercent = 1f;
+    private float scroll;
+    private float moveSpeedValue = 0f;
     private float turnSmoothTime = 0.1f;
     private float turnSmoothVelocity;
-
-    [SerializeField] Animator animator;
-
+    private float renderDelay = 0.2f;
     private Vector3 velocity;
     private bool isAiming = false;
-    private Renderer[] playerRenderers;
+
     void Start()
     {
-        controller = GetComponent<CharacterController>();
-        aimCanvas.alpha = 0;
-        //transform.position = DataContainer.instance.playerPositionSchool;
-        playerRenderers = GetComponentsInChildren<Renderer>();
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
 
-        aimCamera.Priority = 10; // 降低瞄準相機的優先權
-        thirdPersonCamera.Priority = 20; // 恢復第三人稱相機
+        controller = GetComponent<CharacterController>();
+        playerRenderers = GetComponentsInChildren<Renderer>();
+
+        virtualCamera.Priority = 10;
+        freeLookCamera.Priority = 20;
+        aimCanvas.alpha = 0;
+        aimVolume.priority = -1;
+        originalOrbits = new CinemachineFreeLook.Orbit[freeLookCamera.m_Orbits.Length];
+        for (int i = 0; i < freeLookCamera.m_Orbits.Length; i++)
+        {
+            originalOrbits[i].m_Height = freeLookCamera.m_Orbits[i].m_Height;
+            originalOrbits[i].m_Radius = freeLookCamera.m_Orbits[i].m_Radius;
+        }
     }
 
     void Update()
     {
         if (!ProgressManager.instance.isStory)
         {
-            HandleAiming();
             MoveCharacter();
+            HandleAiming();
             HandleShooting();
+            ZoomCamera();
         }
     }
-
-    void HandleAiming()
-    {
-        if (Input.GetMouseButtonDown(1)) // 按下右鍵，進入瞄準模式
-        {
-
-            // 讓 aimCamera 旋轉與 thirdPersonCamera 保持一致
-            var aimPOV = aimCamera.GetCinemachineComponent<CinemachinePOV>();
-            var thirdPersonPOV = thirdPersonCamera.GetComponent<CinemachineFreeLook>();
-
-            if (aimPOV != null && thirdPersonPOV != null)
-            {
-                aimPOV.m_HorizontalAxis.Value = thirdPersonPOV.m_XAxis.Value; // 同步水平旋轉
-                aimPOV.m_VerticalAxis.Value = thirdPersonPOV.m_YAxis.Value;   // 同步垂直旋轉
-            }
-
-            aimCanvas.alpha = 1;
-            aimCamera.Priority = 20; // 切換到瞄準鏡頭
-            thirdPersonCamera.Priority = 5; // 降低第三人稱相機的優先權
-
-            // 進入瞄準模式，禁用角色渲染
-            StopAllCoroutines();
-            StartCoroutine(DisablePlayerRenderingWithDelay());
-
-            isAiming = true;
-        }
-        else if (Input.GetMouseButtonUp(1)) // 鬆開右鍵，離開瞄準模式
-        {
-            aimCanvas.alpha = 0;
-
-            aimCamera.Priority = 10; // 降低瞄準相機的優先權
-            thirdPersonCamera.Priority = 20; // 恢復第三人稱相機
-
-            // 恢復渲染
-            StopAllCoroutines();
-            StartCoroutine(EnablePlayerRenderingWithDelay());
-
-            isAiming = false;
-        }
-    }
-    private float moveSpeedValue = 0f;
 
     void MoveCharacter()
     {
@@ -105,11 +75,9 @@ public class CharacterMovement : MonoBehaviour
 
         if (isAiming)
         {
-            // 在瞄準模式下，使用 aimCamera 的 Y 軸角度控制角色旋轉
-            float cameraY = mainCamera.transform.eulerAngles.y; // 取得 aimCamera 的 Y 軸旋轉角度
-            transform.rotation = Quaternion.Euler(0f, cameraY, 0f); // 角色面向相機的 Y 軸
+            float cameraY = mainCamera.transform.eulerAngles.y;
+            transform.rotation = Quaternion.Euler(0f, cameraY, 0f);
 
-            // 根據角色朝向移動
             Vector3 moveDir = transform.right * horizontal + transform.forward * vertical;
             controller.Move(moveDir.normalized * speed * Time.deltaTime);
 
@@ -117,7 +85,6 @@ public class CharacterMovement : MonoBehaviour
         }
         else
         {
-            // 一般模式下，角色始終朝向相機的前方
             if (direction.magnitude >= 0.1f)
             {
                 float targetAngle = Mathf.Atan2(direction.x, direction.z) * Mathf.Rad2Deg + mainCamera.transform.eulerAngles.y;
@@ -133,7 +100,44 @@ public class CharacterMovement : MonoBehaviour
 
         controller.Move(velocity * Time.deltaTime);
         moveSpeedValue = Mathf.Lerp(moveSpeedValue, targetSpeed, Time.deltaTime * 10f);
-        animator.SetFloat("Speed", moveSpeedValue);
+        //animator.SetFloat("Speed", moveSpeedValue);
+    }
+
+    void HandleAiming()
+    {
+        if (Input.GetMouseButtonDown(1))
+        {
+            isAiming = true;
+            aimCanvas.alpha = 1;
+            aimVolume.priority = 1;
+            virtualCamera.Priority = 20;
+            freeLookCamera.Priority = 10;
+
+            // 讓 aimCamera 旋轉與 thirdPersonCamera 保持一致
+            var aimPOV = virtualCamera.GetCinemachineComponent<CinemachinePOV>();
+            var thirdPersonPOV = freeLookCamera.GetComponent<CinemachineFreeLook>();
+
+            if (aimPOV != null && thirdPersonPOV != null)
+            {
+                aimPOV.m_HorizontalAxis.Value = thirdPersonPOV.m_XAxis.Value;
+                aimPOV.m_VerticalAxis.Value = thirdPersonPOV.m_YAxis.Value;
+            }
+
+            StopAllCoroutines();
+            StartCoroutine(DisablePlayerRenderer());
+
+        }
+        else if (Input.GetMouseButtonUp(1))
+        {
+            isAiming = false;
+            aimCanvas.alpha = 0;
+            aimVolume.priority = -1;
+            virtualCamera.Priority = 10;
+            freeLookCamera.Priority = 20;
+
+            StopAllCoroutines();
+            StartCoroutine(EnablePlayerRenderer());
+        }
     }
 
     void HandleShooting()
@@ -141,38 +145,59 @@ public class CharacterMovement : MonoBehaviour
         if (isAiming)
         {
             RaycastHit hit;
-            Ray ray = new Ray(mainCamera.transform.position, mainCamera.transform.forward); // 從相機位置發射 Raycast
+            Ray ray = new Ray(mainCamera.transform.position, mainCamera.transform.forward);
 
             if (Physics.Raycast(ray, out hit, 300f))
             {
-                if (hit.collider.CompareTag("BattleTrigger")) // 只對 "BattleTrigger" 物體生效
+                if (hit.collider.CompareTag("BattleTrigger"))
                 {
-                    aimDot.color = Color.red; // 命中時變紅
+                    aimDot.color = Color.red;
 
-                    // **只有在按下左鍵時，才執行動作**
                     if (Input.GetMouseButtonDown(0))
                     {
                         BattleTrigger target = hit.collider.GetComponent<BattleTrigger>();
                         if (target != null)
                         {
-                            target.ExecuteAction();
+                            target.ExecuteBattle();
                         }
                     }
                 }
                 else
                 {
-                    aimDot.color = Color.white; // 不是 BattleTrigger 時恢復白色
+                    aimDot.color = Color.white;
                 }
             }
             else
             {
-                aimDot.color = Color.white; // 沒有命中任何物體時恢復白色
+                aimDot.color = Color.white;
             }
         }
     }
 
-    // 延遲禁用角色的渲染
-    IEnumerator DisablePlayerRenderingWithDelay()
+    void ZoomCamera()
+    {
+        for (int i = 0; i < freeLookCamera.m_Orbits.Length; i++)
+        {
+            freeLookCamera.m_Orbits[i].m_Height = originalOrbits[i].m_Height * zoomPercent;
+            freeLookCamera.m_Orbits[i].m_Radius = originalOrbits[i].m_Radius * zoomPercent;
+        }
+        scroll = Input.mouseScrollDelta.y;
+        if (zoomPercent >= 0.5f && zoomPercent <= 1f)
+        {
+            zoomPercent += -scroll * 0.05f;
+        }
+        if (zoomPercent < 0.5f)
+        {
+            zoomPercent = 0.5f;
+        }
+
+        if (zoomPercent > 1f)
+        {
+            zoomPercent = 1f;
+        }
+    }
+
+    IEnumerator DisablePlayerRenderer()
     {
         yield return new WaitForSeconds(renderDelay);
         foreach (Renderer renderer in playerRenderers)
@@ -181,8 +206,7 @@ public class CharacterMovement : MonoBehaviour
         }
     }
 
-    // 延遲恢復角色的渲染
-    IEnumerator EnablePlayerRenderingWithDelay()
+    IEnumerator EnablePlayerRenderer()
     {
         yield return new WaitForSeconds(renderDelay * 0.1f);
         foreach (Renderer renderer in playerRenderers)

@@ -94,19 +94,23 @@ namespace ASP
                 desc.msaaSamples = 1;
                 desc.depthBufferBits = (int)DepthBits.None;
                 
-                if (m_copiedColor == null)
+                if (m_copiedColor != null)
                 {
-                    m_copiedColor = RenderTexture.GetTemporary(desc);
+                    RenderTexture.ReleaseTemporary(m_copiedColor);
+                    m_copiedColor = null;
                 }
+                m_copiedColor = RenderTexture.GetTemporary(desc);
                 
                 desc.colorFormat = RenderTextureFormat.ARGB32;
                 desc.msaaSamples = 1;
                 desc.depthBufferBits = (int)DepthBits.None;
-
-                if (m_outlineInfoRT == null)
+                
+                if (m_outlineInfoRT != null)
                 {
-                    m_outlineInfoRT = RenderTexture.GetTemporary(desc);
+                    RenderTexture.ReleaseTemporary(m_outlineInfoRT);
+                    m_outlineInfoRT = null;
                 }
+                m_outlineInfoRT = RenderTexture.GetTemporary(desc);
 
                 ConfigureTarget(m_copiedColor);
                 ConfigureClear(ClearFlag.Color, Color.white);
@@ -114,8 +118,6 @@ namespace ASP
 
             public void Dispose()
             {
-                m_copiedColor?.Release();
-                m_outlineInfoRT?.Release();
             }
             
             private void DrawTriangle(CommandBuffer cmd, Material material, int shaderPass)

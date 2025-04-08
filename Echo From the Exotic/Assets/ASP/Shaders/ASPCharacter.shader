@@ -130,8 +130,9 @@ Shader "ASP/Character"
         [ShowIf(_style, NotEqual, 2)][Main(Matcap , _, off, off)]_GroupMatCap ("Matcap Reflection", float) = 0
         [HideInInspector]_IsUsingMatcapReflectMap("_IsUsingMatcapReflectMap", float) = 0
         [Tex(Matcap)] _MatCapReflectionMap("Matcap Reflection Map", 2D) = "Black" {}
+        [Tex(Matcap)] _MatCapReflectionMaskMap("Matcap Mask", 2D) = "White" {}
         [ActiveIf(_IsUsingMatcapReflectMap, Equal, 1)]
-        [Sub(Matcap)] _MatCapReflectionStrength("Matcap reflection Strength", Range(0,2)) = 1
+        [Sub(Matcap)] _MatCapReflectionStrength("Matcap Reflection Strength", Range(0,2)) = 1
         [ActiveIf(_IsUsingMatcapReflectMap, Equal, 1)]
         [Sub(Matcap)] _MatCapRollStabilize("Matcap Camera Roll Stabilize", Range(0,1)) = 1
         // Blending state

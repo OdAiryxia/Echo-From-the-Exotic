@@ -2,36 +2,27 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum BattleScene
-{
-    SchoolOutdoor,
-    Parkinglot
-}
-
 public class BattleTrigger : MonoBehaviour
 {
-    public List<GameObject> enemiesToSpawn;
+    [SerializeField] private string triggerID;
 
-    public BattleScene battleScene;
-    public void ExecuteAction()
+    [SerializeField] private List<GameObject> enemiesToSpawn;
+    [SerializeField] private BattlefieldIndexes battlefieldIndex;
+
+    void Start()
     {
-        DataContainer.instance.battlePrefebEnemy.Clear();
+        if (DataContainer.instance.removalTrigger.Contains(triggerID))
+        {
+            Destroy(this.gameObject);
+        }
+    }
 
-        foreach (var prefab in enemiesToSpawn)
-        {
-            if (prefab != null)
-            {
-                DataContainer.instance.battlePrefebEnemy.Add(prefab);
-            }
-        }
+    public void ExecuteBattle()
+    {
+        DataContainer.instance.pendingTrigger.Clear();
+        DataContainer.instance.pendingTrigger.Add(triggerID);
 
-        if (battleScene == BattleScene.SchoolOutdoor)
-        {
-            GameManager.instance.LoadBattleScene(SceneIndexes.Battlefield_SchoolOutdoor);
-        }
-        else if (battleScene == BattleScene.Parkinglot)
-        {
-            GameManager.instance.LoadBattleScene(SceneIndexes.Battlefield_Parkinglot);
-        }
+        DataContainer.instance.battlePrefabEnemy = enemiesToSpawn;
+        GameManager.instance.LoadBattle(battlefieldIndex);
     }
 }

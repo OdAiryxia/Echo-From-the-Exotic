@@ -97,7 +97,7 @@ half3 ToonEyeLighting(Light light, ASPInputData inputData, BRDFData brdfData)
     rampShadowedColor = 0;
     NdotL = saturate(dot(inputData.normalWS, light.direction));
     #else
-    rampShadowedColor = inputData.selfUnlitAreaColor * inputData.albedo;
+    rampShadowedColor = inputData.selfUnlitAreaColor * inputData.albedo.rgb;
     NdotL = saturate(dot(inputData.frontDirectionWS, light.direction) );
     #endif
     
@@ -211,6 +211,29 @@ real3 BRDF_IBL(BRDFData brdfData, ASPInputData inputData, float occlusion)
 }
 */
 
+real3 MatCapHightlightWithMask(ASPInputData inputData, Light light)
+{
+    
+    #ifdef _MATCAP_HIGHLIGHT_MAP
+    float3 matcapUp = mul((float3x3)UNITY_MATRIX_I_V, float3(0, 1, 0));
+    float3 matcapRollFixedUp = float3(0, 1, 0);
+    float rollStabilizeFactor = 1.0 - saturate(dot(matcapUp, matcapRollFixedUp));
+    matcapUp = lerp(matcapUp, matcapRollFixedUp, rollStabilizeFactor * inputData.matCapRollStabilize);
+
+    float3 right = normalize(cross(matcapUp, -inputData.viewDirectionWS));
+    matcapUp = cross(-inputData.viewDirectionWS, right);
+    float2 matcapUV = mul(float3x3(right, matcapUp, inputData.viewDirectionWS), inputData.matCapNormalWS).xy;
+    matcapUV = matcapUV * 0.5 + 0.5;
+    float4 matcapRGBA = SAMPLE_TEXTURE2D(_MatCapReflectionMap, sampler_MatCapReflectionMap, matcapUV);
+    matcapRGBA *= inputData.matCapReflectionStrength;
+
+    float matcapMask = SAMPLE_TEXTURE2D(_MatCapReflectionMaskMap, sampler_MatCapReflectionMap, inputData.specUV).r;
+        return matcapRGBA.rgb * matcapRGBA.a * matcapMask;
+    #else
+        return real3(0,0,0);
+    #endif
+}
+
 real3 MatCapHightlight(ASPInputData inputData, Light light)
 {
     #ifdef _MATCAP_HIGHLIGHT_MAP
@@ -294,7 +317,7 @@ void HandleOffsetShadow(inout ASPInputData inputData, Light mainLight)
 {
     float4 scaledScreenParams = GetScaledScreenParams();
     float3 viewLightDir = normalize(TransformWorldToViewDir(mainLight.direction)) * (1 / inputData.positionNDC.w);
-    float2 samplingPoint = inputData.normalizedScreenSpaceUV + inputData.offsetShadowDistance * viewLightDir.xy /
+    float2 samplingPoint = ComputeNormalizedDeviceCoordinates(inputData.positionWS, unity_MatrixVP) + inputData.offsetShadowDistance * viewLightDir.xy /
         scaledScreenParams.xy;
     float animeShadowDepth = SampleCharacterDepthOffsetShadow(samplingPoint).r;
     half offsetMaterialID = SAMPLE_TEXTURE2D_LOD(_ASPMaterialTexture, asp_point_clamp_sampler, samplingPoint, 0).r;
@@ -448,7 +471,7 @@ real4 UniversalFragmentToonLit(ASPInputData inputData, bool overrideGIColor)
 
     finalColor += HairLighting(inputData);
 
-    finalColor += MatCapHightlight(inputData, mainLight);
+    finalColor += MatCapHightlightWithMask(inputData, mainLight);
 
     finalColor += inputData.emission;
     return real4(finalColor, inputData.albedo.a * inputData.baseColor.a);

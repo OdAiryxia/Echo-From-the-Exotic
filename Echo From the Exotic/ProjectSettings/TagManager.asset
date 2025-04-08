@@ -4,8 +4,8 @@
 TagManager:
   serializedVersion: 2
   tags:
-  - PlayerTeam
-  - EnemyTeam
+  - TeamPlayer
+  - TeamEnemy
   - BattleTrigger
   layers:
   - Default
@@ -15,13 +15,13 @@ TagManager:
   - Water
   - UI
   - Interactable
-  - 
-  - 
-  - 
-  - BattlePlayerTeam
-  - BattleEnemyTeam
-  - Plane
   - DamagePopup
+  - Team Player Units
+  - Team Enemy Units
+  - 
+  - 
+  - 
+  - 
   - 
   - 
   - 
@@ -43,7 +43,4 @@ TagManager:
   m_SortingLayers:
   - name: Default
     uniqueID: 0
-    locked: 0
-  - name: DamagePopup
-    uniqueID: 1213325127
     locked: 0

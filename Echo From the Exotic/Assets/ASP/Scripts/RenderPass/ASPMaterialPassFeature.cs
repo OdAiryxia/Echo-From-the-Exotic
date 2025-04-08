@@ -215,11 +215,12 @@ namespace ASP
                     renderingData.cameraData.cameraTargetDescriptor.width,
                     renderingData.cameraData.cameraTargetDescriptor.height);
                 desc.colorFormat = RenderTextureFormat.ARGB32;
-
+                desc.depthBufferBits = 0;
                 RenderingUtils.ReAllocateIfNeeded(ref m_materialPassTarget, desc, name: "_ASPMaterialTexture");
                 //desc.graphicsFormat = GraphicsFormat.D24_UNorm;
 
                 desc.depthBufferBits = renderingData.cameraData.cameraTargetDescriptor.depthBufferBits;
+                desc.colorFormat = RenderTextureFormat.Depth;
                 RenderingUtils.ReAllocateIfNeeded(ref m_detphTarget, desc);
 
                 ConfigureTarget(m_materialPassTarget, m_detphTarget);
@@ -279,7 +280,7 @@ namespace ASP
                     UniversalRenderingData universalRenderingData = frameData.Get<UniversalRenderingData>();
                     UniversalCameraData cameraData = frameData.Get<UniversalCameraData>();
                     UniversalLightData lightData = frameData.Get<UniversalLightData>();
-                    
+
                     var sortFlags = SortingCriteria.CommonOpaque;
                     DrawingSettings drawSettings =
  RenderingUtils.CreateDrawingSettings(m_shaderTagId, universalRenderingData, cameraData, lightData, sortFlags);
@@ -297,6 +298,7 @@ namespace ASP
  UniversalRenderer.CreateRenderGraphTexture(renderGraph, desc, "_ASPMaterialTexture", false);
                     passData.Destination = destination;
                     
+                    desc.colorFormat = RenderTextureFormat.Depth;
                     desc.depthBufferBits = cameraData.cameraTargetDescriptor.depthBufferBits;
                     TextureHandle destinationDepth =
  UniversalRenderer.CreateRenderGraphTexture(renderGraph, desc, "_ASPMaterialDepthTexture", false);

@@ -207,9 +207,9 @@ Shader "Hidden/ASP/PostProcess/Outline"
                     m3 = clamp(m3, -2, 2);
                     real3 mH = m0 + m1;
                     real3 mV = m2 + m3;
-                    float factor = abs(mH + mV);
+                    float factor = length(abs(mH + mV));
                     edgeMaterial = 1.0 - step(_MaterialThreshold,
-                        saturate(pow(factor * materialFactorWeight, _MaterialBias) * vertexWeight * materialWeight));
+                        saturate(pow(abs(factor * materialFactorWeight), _MaterialBias) * vertexWeight * materialWeight));
                 }
                 #endif
 
@@ -233,7 +233,7 @@ Shader "Hidden/ASP/PostProcess/Outline"
                     real lumaH = luma0 + luma1;
                     real lumaV = luma2 + luma3;
                     float factor = abs(lumaH + lumaV);
-                    edgeLuma = 1.0 - step(_LumaThreshold, saturate(pow(factor * lumaFactorWeight, _LumaBias) * vertexWeight * lumaWeight));
+                    edgeLuma = 1.0 - step(_LumaThreshold, saturate(pow(abs(factor * lumaFactorWeight), _LumaBias) * vertexWeight * lumaWeight));
                 }
                 #endif
 
@@ -255,9 +255,9 @@ Shader "Hidden/ASP/PostProcess/Outline"
                     n3 = clamp(n3, -2, 2);
                     float3 nH = n0 + n1;
                     float3 nV = n2 + n3;
-                    float factor = abs(nH + nV);
+                    float factor = length(abs(nH + nV));
                     edgeNormals = 1.0 - step(_NormalsThreshold,
-                saturate(pow(factor * normalsFactorWeight, _NormalsBias) * normalsWeight * vertexWeight));
+                saturate(pow(abs(factor * normalsFactorWeight), _NormalsBias) * normalsWeight * vertexWeight));
                 }
                 #endif
 
@@ -280,9 +280,9 @@ Shader "Hidden/ASP/PostProcess/Outline"
                     d3 = clamp(d3, -2, 2);
                     float dH = d0 + d1;
                     float dV = d2 + d3;
-                    float factor = abs(dH + dV);
+                    float factor = length(abs(dH + dV));
                     edgeDepth = 1.0 - step(_DepthThreshold,
-                                  saturate(pow(factor * depthFactorWeight, _DepthBias) * depthWeight * vertexWeight));
+                                  saturate(pow(abs(factor * depthFactorWeight), _DepthBias) * depthWeight * vertexWeight));
                 }
                 #endif
                 float edgeOuter = 1;
@@ -304,7 +304,7 @@ Shader "Hidden/ASP/PostProcess/Outline"
                     outer3 = clamp(outer3, -2, 2);
                     real outerH = outer0 + outer1;
                     real outerV = outer2 + outer3;
-                    float factor = abs(outerH + outerV);
+                    float factor = length(abs(outerH + outerV));
                     edgeOuter = 1.0 - step(0.1, saturate(pow(factor, 1)));
                 }
 
@@ -353,17 +353,21 @@ Shader "Hidden/ASP/PostProcess/Outline"
 
             real4 HandleDebug(float2 uv, real3 baseColor, real3 outlineColor, real hasEdge, real distanceFactor, float channelB)
             {
+                real4 output = real4(0,0,0,1);
                 float3 debugBlendOutline = _OutlineColor.rgb;
                 debugBlendOutline = lerp(debugBlendOutline, _DebugBackgroundColor, distanceFactor);
                 if (_DebugEdgeType == 5)
                 {
                     if(channelB > 0)
                     {
-                        return real4(_DebugBackgroundColor, 1);
+                        output.rgb = _DebugBackgroundColor.rgb;
+                        return output;
                     }
                     float3 debugBaseColor = lerp(float3(1, 1, 0), _DebugBackgroundColor, SampleMateriaPass(uv).b);
-                    return real4(debugBaseColor, 1);
+                    output.rgb = debugBaseColor;
+                    return output;
                 }
+                
                 if (_DebugEdgeType == 6)
                 {
                       if(channelB > 0)
@@ -372,10 +376,11 @@ Shader "Hidden/ASP/PostProcess/Outline"
                     }
                     float3 debugBaseColor = lerp(float3(1, 1, 0), _DebugBackgroundColor, SampleMateriaPass(uv).b);
                     float3 debugColor = lerp(debugBaseColor, debugBlendOutline, hasEdge);
-                    return real4(debugColor, 1);
+                    output.rgb = debugColor;
+                    return output;
                 }
-
-                return real4(lerp(_DebugBackgroundColor, debugBlendOutline, hasEdge), 1);
+                output = real4(lerp(_DebugBackgroundColor, debugBlendOutline, hasEdge), 1);
+                return output;
             }
 
             half4 frag(Varyings input) : SV_Target
