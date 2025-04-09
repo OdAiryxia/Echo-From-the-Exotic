@@ -22,8 +22,10 @@ public class InteractableOngoing : MonoBehaviour, IInteractable
         this.gameObject.layer = 6;
     }
 
+#if UNITY_EDITOR
     void OnDrawGizmos()
     {
         UnityEditor.Handles.Label(transform.position + Vector3.up * 1.0f, $"Interactable: {_prompt}");
     }
+#endif
 }

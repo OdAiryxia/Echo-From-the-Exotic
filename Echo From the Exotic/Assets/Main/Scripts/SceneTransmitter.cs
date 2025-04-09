@@ -13,8 +13,10 @@ public class SceneTransmitter : MonoBehaviour, IInteractable
         return true;
     }
 
+#if UNITY_EDITOR
     void OnDrawGizmos()
     {
         UnityEditor.Handles.Label(transform.position + Vector3.up * 1.0f, $"→ {scene} : {spawnpointID}");
     }
+#endif
 }
