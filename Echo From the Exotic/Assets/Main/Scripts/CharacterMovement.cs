@@ -16,6 +16,7 @@ public class CharacterMovement : MonoBehaviour
     [SerializeField] private CanvasGroup aimCanvas;
     [SerializeField] private Image aimDot;
     [SerializeField] private Volume aimVolume;
+    [SerializeField] private Animator animator;
 
     [SerializeField] private float moveSpeed = 5f;
     [SerializeField] private float sprintMultiplier = 1.5f;
@@ -30,6 +31,11 @@ public class CharacterMovement : MonoBehaviour
     private float renderDelay = 0.2f;
     private Vector3 velocity;
     private bool isAiming = false;
+
+    void Awake()
+    {
+        ProgressManager.instance.player = this.gameObject;
+    }
 
     void Start()
     {
@@ -100,7 +106,7 @@ public class CharacterMovement : MonoBehaviour
 
         controller.Move(velocity * Time.deltaTime);
         moveSpeedValue = Mathf.Lerp(moveSpeedValue, targetSpeed, Time.deltaTime * 10f);
-        //animator.SetFloat("Speed", moveSpeedValue);
+        animator.SetFloat("Speed", moveSpeedValue);
     }
 
     void HandleAiming()

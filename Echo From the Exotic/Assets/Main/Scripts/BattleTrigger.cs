@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class BattleTrigger : MonoBehaviour
 {
@@ -8,6 +9,8 @@ public class BattleTrigger : MonoBehaviour
 
     [SerializeField] private List<GameObject> enemiesToSpawn;
     [SerializeField] private BattlefieldIndexes battlefieldIndex;
+    [SerializeField] private UnityEvent events;
+    [SerializeField] private ModalWindowTemplate modalWindowTemplate;
 
     void Start()
     {

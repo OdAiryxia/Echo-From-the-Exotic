@@ -60,6 +60,9 @@ public class ModalWindowManager : MonoBehaviour
 
     public void Close()
     {
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
+
         panel.gameObject.SetActive(false);
         modalWindow.gameObject.SetActive(false);
         ProgressManager.instance.isStory = false;
@@ -67,6 +70,9 @@ public class ModalWindowManager : MonoBehaviour
 
     public void ShowVertical(string title, Sprite image, string content, string confirmText, Action confirmAction, string declineText = null, Action declineAction = null, string alternateText = null, Action alternateAction = null)
     {
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
+
         panel.gameObject.SetActive(true);
         modalWindow.gameObject.SetActive(true);
         horizontalLayoutArea.gameObject.SetActive(false);
@@ -131,6 +137,9 @@ public class ModalWindowManager : MonoBehaviour
 
     public void ShowHorizontal(string title, Sprite image, string content, string confirmText, Action confirmAction, string declineText = null, Action declineAction = null, string alternateText = null, Action alternateAction = null)
     {
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
+
         modalWindow.gameObject.SetActive(true);
         horizontalLayoutArea.gameObject.SetActive(true);
         verticalLayoutArea.gameObject.SetActive(false);
@@ -194,6 +203,12 @@ public class ModalWindowManager : MonoBehaviour
 
     private IEnumerator DelayedShow()
     {
+        yield return null; // 等待一幀
+
+        LayoutRebuilder.ForceRebuildLayoutImmediate((RectTransform)modalWindow);
+        LayoutRebuilder.ForceRebuildLayoutImmediate((RectTransform)horizontalLayoutArea);
+        LayoutRebuilder.ForceRebuildLayoutImmediate((RectTransform)verticalLayoutArea);
+
         yield return null; // 等待一幀
 
         LayoutRebuilder.ForceRebuildLayoutImmediate((RectTransform)modalWindow);

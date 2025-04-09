@@ -1,4 +1,5 @@
 ﻿using Flower;
+using Cinemachine;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -8,6 +9,11 @@ public class ProgressManager : MonoBehaviour
     public static ProgressManager instance;
     private FlowerSystem flowerSys;
 
+    public CinemachineFreeLook cam;
+    public GameObject player;
+
+    public StoryPosition[] storyPositions;
+    public ModalWindowTemplate[] modalWindowTemplates;
     void Awake()
     {
         if (instance == null)
@@ -23,11 +29,17 @@ public class ProgressManager : MonoBehaviour
 
     void Start()
     {
+        cam = new GameObject("storyCam").AddComponent<CinemachineFreeLook>();
+        cam.Priority = 5;
+
         flowerSys = FlowerManager.Instance.CreateFlowerSystem("FlowerSystem", true);
         flowerSys.textSpeed = 0.05f;
         flowerSys.SetScreenReference(1920, 1080);
         flowerSys.RegisterCommand("LockButton", LockButton);
         flowerSys.RegisterCommand("ReleaseButton", ReleaseButton);
+        flowerSys.RegisterCommand("SetPosition",SetPosition);
+        flowerSys.RegisterCommand("SetModalWindow", SetModalWindow);
+        flowerSys.RegisterCommand("ReturnCamera", ReturnCamera);
         flowerSys.SetupDialog();
         flowerSys.SetupUIStage();
         flowerSys.ReadTextFromResource("hide");
@@ -52,10 +64,64 @@ public class ProgressManager : MonoBehaviour
     {
         isStory = false;
     }
+
+    void SetPosition(List<string> _params)
+    {
+        if (_params.Count > 0)
+        {
+            if (int.TryParse(_params[0], out int index))
+            {
+                if (storyPositions[index].camPos != null)
+                {
+                    cam.Priority = 20;
+                    cam.gameObject.transform.position = storyPositions[index].camPos.transform.position;
+                    cam.gameObject.transform.rotation = storyPositions[index].camPos.transform.rotation;
+                }
+
+                if (storyPositions[index].playerPos != null)
+                {
+                    player.gameObject.transform.position = storyPositions[index].playerPos.transform.position;
+                    player.gameObject.transform.rotation = storyPositions[index].playerPos.transform.rotation;
+                }
+
+                if (storyPositions[index].otherPos != null)
+                {
+                    if (index > 0 && storyPositions[index - 1].otherPos != null)
+                    {
+                        storyPositions[index - 1].otherPos.SetActive(false);
+                    }
+                    storyPositions[index].otherPos.SetActive(true);
+                }
+            }
+            else
+            {
+                Debug.LogWarning("無法將參數轉換為整數：" + _params[0]);
+            }
+        }
+        else
+        {
+            Debug.LogWarning("缺少參數！");
+        }
+    }
+
+    void SetModalWindow(List<string> _params)
+    {
+        ShowCurrentModal();
+    }
+
+    void ReturnCamera(List<string> _params)
+    {
+        cam.Priority = 5;
+    }
     #endregion
 
     public int currentChapter = 0;
     public bool isStory = false;
+
+    public void StartCpt()
+    {
+        StartChapter(currentChapter);
+    }
 
     public void StartChapter(int chapter)
     {
@@ -65,6 +131,7 @@ public class ProgressManager : MonoBehaviour
                 flowerSys.ReadTextFromResource("prologue");
                 break;
             case 1:
+                flowerSys.ReadTextFromResource("prologue");
                 break;
             default:
                 break;
@@ -74,5 +141,37 @@ public class ProgressManager : MonoBehaviour
     public void NextChapter()
     {
         currentChapter++;;
+    }
+
+    public int currentIndex = 0;
+    private void ShowCurrentModal()
+    {
+        if (currentIndex >= modalWindowTemplates.Length)
+        {
+            ModalWindowManager.instance.Close();
+            return;
+        }
+
+        ModalWindowTemplate currentTemplate = modalWindowTemplates[currentIndex];
+
+        ModalWindowManager.instance.ShowVertical(
+            currentTemplate.title,
+            currentTemplate.image,
+            currentTemplate.context,
+            currentTemplate.confirmText, () =>
+            {
+                currentIndex++;
+                ModalWindowManager.instance.Close();
+                ShowCurrentModal(); // 顯示下一個
+            },
+            currentTemplate.declineText, () =>
+            {
+                ModalWindowManager.instance.Close();
+            },
+            currentTemplate.alternateText, () =>
+            {
+                ModalWindowManager.instance.Close();
+            }
+        );
     }
 }

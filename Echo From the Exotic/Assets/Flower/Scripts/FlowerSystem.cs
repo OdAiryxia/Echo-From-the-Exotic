@@ -176,8 +176,8 @@ namespace Flower
             // 配置 AudioSource 的默認屬性
             textAudioSource.playOnAwake = false;
             textAudioSource.loop = false;
-            textAudioSource.volume = 0f;
-            textAudioSource.pitch = 0.75f;
+            textAudioSource.volume = 0.1f;
+            textAudioSource.pitch = 0.55f;
             string audioClipPath = "Audio/text_appear";
             textAudioSource.clip = Resources.Load<AudioClip>(audioClipPath);
         }
