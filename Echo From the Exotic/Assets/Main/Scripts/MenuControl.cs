@@ -11,9 +11,23 @@ public class MenuControl : MonoBehaviour
 
     [SerializeField] private ModalWindowTemplate modalWindowTemplates;
 
+    void Update()
+    {
+        if (Cursor.lockState != CursorLockMode.None)
+        {
+            Cursor.lockState = CursorLockMode.None;
+        }
+
+        if (Cursor.visible != true)
+        {
+            Cursor.visible = true;
+        }
+    }
+
     public void OnLogoButtonClicked()
     {
-        GameManager.instance.LoadWorld(WorldIndexes.world_01_classroom, "hallway");
+        //GameManager.instance.LoadWorld(WorldIndexes.world_01_classroom, "hallway");
+        GameManager.instance.LoadWorld((WorldIndexes)GameManager.instance.previousWorld, "");
     }
 
     public void OnSettingButtonClicked()

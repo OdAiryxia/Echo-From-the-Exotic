@@ -13,6 +13,7 @@ public class DataContainer : MonoBehaviour
     public List<string> removalTrigger;
     public List<string> pendingTrigger;
 
+    public bool nextCptAfterBattle;
     void Awake()
     {
         if (instance == null)

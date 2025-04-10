@@ -63,7 +63,10 @@ public class UnitRobot01 : Unit
         yield return new WaitForSeconds(0.75f);
 
         GainUltimateEnergy(energyGainOnAttack);
-        unit.TakeDamage(CalculateDamage().damage, CalculateDamage().isCrit);
+
+        var (damage, isCrit) = CalculateDamage();
+        unit.TakeDamage(damage, isCrit);
+
         BattleManagerUI.instance.Impulse(0.2f);
 
         yield return new WaitForSeconds(0.75f);

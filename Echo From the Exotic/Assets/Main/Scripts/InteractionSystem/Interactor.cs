@@ -11,25 +11,73 @@ public class Interactor : MonoBehaviour
 
     private IInteractable _interactable;
 
+    //void Update()
+    //{
+    //    _numfound = Physics.OverlapSphereNonAlloc(_interactionPoint.position, _interactionPointRadius, _colliders, _interactableMask);
+
+    //    if (_numfound > 0)
+    //    {
+    //        _interactable = _colliders[0].GetComponent<IInteractable>();
+
+    //        if (_interactable != null)
+    //        {
+    //            if (!InteractionPromptUI.instance.IsDisplayed) InteractionPromptUI.instance.SetUp(_interactable.InteractablePrompt);
+
+    //            if (Input.GetKeyDown(KeyCode.E)) _interactable.Interact(this);
+    //        }
+    //    }
+    //    else
+    //    {
+    //        if (_interactable != null) _interactable = null;
+    //        if (InteractionPromptUI.instance.IsDisplayed) InteractionPromptUI.instance.Close();
+    //    }
+    //}
     void Update()
     {
         _numfound = Physics.OverlapSphereNonAlloc(_interactionPoint.position, _interactionPointRadius, _colliders, _interactableMask);
 
-        if (_numfound > 0)
+        IInteractable closestInteractable = null;
+        float closestDistance = float.MaxValue;
+
+        for (int i = 0; i < _numfound; i++)
         {
-            _interactable = _colliders[0].GetComponent<IInteractable>();
-
-            if (_interactable != null)
+            IInteractable interactable = _colliders[i].GetComponent<IInteractable>();
+            if (interactable != null)
             {
-                if (!InteractionPromptUI.instance.IsDisplayed) InteractionPromptUI.instance.SetUp(_interactable.InteractablePrompt);
+                float dist = Vector3.Distance(_interactionPoint.position, _colliders[i].transform.position);
+                if (dist < closestDistance)
+                {
+                    closestDistance = dist;
+                    closestInteractable = interactable;
+                }
+            }
+        }
 
-                if (Input.GetKeyDown(KeyCode.E)) _interactable.Interact(this);
+        if (closestInteractable != null)
+        {
+            _interactable = closestInteractable;
+
+            // 更新提示 UI（只在內容不同或未顯示時執行）
+            if (!InteractionPromptUI.instance.IsDisplayed ||
+                InteractionPromptUI.instance.CurrentPrompt != _interactable.InteractablePrompt)
+            {
+                InteractionPromptUI.instance.SetUp(_interactable.InteractablePrompt);
+            }
+
+            // 按下互動鍵
+            if (Input.GetKeyDown(KeyCode.E))
+            {
+                _interactable.Interact(this);
             }
         }
         else
         {
-            if (_interactable != null) _interactable = null;
-            if (InteractionPromptUI.instance.IsDisplayed) InteractionPromptUI.instance.Close();
+            // 沒有任何互動物件
+            if (_interactable != null)
+                _interactable = null;
+
+            if (InteractionPromptUI.instance.IsDisplayed)
+                InteractionPromptUI.instance.Close();
         }
     }
 

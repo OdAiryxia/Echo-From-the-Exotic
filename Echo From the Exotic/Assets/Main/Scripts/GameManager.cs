@@ -32,6 +32,7 @@ public class GameManager : MonoBehaviour
 
         SceneManager.LoadSceneAsync((int)SceneIndexes.TitleScreen, LoadSceneMode.Additive);
         currentWorld = (int)SceneIndexes.TitleScreen;
+        previousWorld = (int)WorldIndexes.world_01_classroom;
         Initialize();
     }
 
@@ -51,7 +52,7 @@ public class GameManager : MonoBehaviour
 
     private List<AsyncOperation> scenesLoading = new List<AsyncOperation>();
 
-    void LoadScene(int scene)
+    public void LoadScene(int scene)
     {
         BlackScreenManager.instance.blackScreen.color = new Color(BlackScreenManager.instance.blackScreen.color.r, BlackScreenManager.instance.blackScreen.color.g, BlackScreenManager.instance.blackScreen.color.b, 1f);
         if (currentWorld != scene)
@@ -84,6 +85,7 @@ public class GameManager : MonoBehaviour
 
         LoadScene((int)scene);
         StartCoroutine(SpawnPlayer(spawnpointID));
+        PauseManager.instance.MainMenuButtonActive();
     }
 
     public void LoadBattle(BattlefieldIndexes scene)
@@ -97,6 +99,7 @@ public class GameManager : MonoBehaviour
 
         LoadScene((int)scene);
         StartCoroutine(WaitForBattleLoad());
+        PauseManager.instance.ExitBattleButtonActive();
     }
 
     IEnumerator SpawnPlayer(string spawnpointID)

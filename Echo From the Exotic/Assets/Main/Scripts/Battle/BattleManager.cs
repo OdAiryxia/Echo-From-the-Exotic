@@ -221,12 +221,18 @@ public class BattleManager : MonoBehaviour
         }
     }
 
-    void EndBattle(bool isVictory)
+    public void EndBattle(bool isVictory)
     {
         inBattle = false;
 
         if (isVictory)
         {
+            if (DataContainer.instance.nextCptAfterBattle)
+            {
+                ProgressManager.instance.NextChapter();
+            }
+
+            BattleManagerUI.instance.ShowBattleStatus("戰鬥勝利");
             foreach (string id in DataContainer.instance.pendingTrigger)
             {
                 DataContainer.instance.removalTrigger.Add(id);
@@ -235,6 +241,7 @@ public class BattleManager : MonoBehaviour
         }
         else if (!isVictory)
         {
+            BattleManagerUI.instance.ShowBattleStatus("戰鬥失敗");
             DataContainer.instance.pendingTrigger.Clear();
         }
 
@@ -326,8 +333,8 @@ public class BattleManager : MonoBehaviour
 
     public void GenerateDamagePopup(int damage, Vector3 pos, bool isCrit)
     {
-        var popup = Instantiate(damagePopupPrefeb, pos, Quaternion.identity);
-        var textMesh = popup.GetComponent<TextMeshPro>();
+        GameObject popup = Instantiate(damagePopupPrefeb, pos, Quaternion.identity);
+        TextMeshPro textMesh = popup.GetComponent<TextMeshPro>();
         textMesh.text = damage.ToString();
         textMesh.color = isCrit ? Color.red : Color.white;
     }

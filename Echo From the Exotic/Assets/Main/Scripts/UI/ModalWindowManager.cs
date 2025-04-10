@@ -8,6 +8,7 @@ using System.Collections;
 public class ModalWindowManager : MonoBehaviour
 {
     public static ModalWindowManager instance;
+    public bool isWindow;
 
     [SerializeField] private Transform panel;
     [SerializeField] private Transform modalWindow;
@@ -54,12 +55,14 @@ public class ModalWindowManager : MonoBehaviour
 
     void Start()
     {
+        isWindow = false;
         panel.gameObject.SetActive(false);
         modalWindow.gameObject.SetActive(false);
     }
 
     public void Close()
     {
+        isWindow = false;
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
 
@@ -70,6 +73,7 @@ public class ModalWindowManager : MonoBehaviour
 
     public void ShowVertical(string title, Sprite image, string content, string confirmText, Action confirmAction, string declineText = null, Action declineAction = null, string alternateText = null, Action alternateAction = null)
     {
+        isWindow = true;
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
 
@@ -137,6 +141,7 @@ public class ModalWindowManager : MonoBehaviour
 
     public void ShowHorizontal(string title, Sprite image, string content, string confirmText, Action confirmAction, string declineText = null, Action declineAction = null, string alternateText = null, Action alternateAction = null)
     {
+        isWindow = true;
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
 

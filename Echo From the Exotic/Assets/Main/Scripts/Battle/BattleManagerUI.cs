@@ -23,6 +23,11 @@ public class BattleManagerUI : MonoBehaviour
     [Space(10)]
     [SerializeField] private List<Image> skillPointImages;
 
+    [Space(10)]
+    [SerializeField] private Image battleStatusImage;
+    [SerializeField] private TextMeshProUGUI battleStatusText;
+    [SerializeField] private Animator battleStatusAnimator;
+
     [Space(20)]
     [SerializeField] private CinemachineImpulseSource impulseSource;
 
@@ -40,6 +45,8 @@ public class BattleManagerUI : MonoBehaviour
         attackButton.onClick.AddListener(OnAttackButtonClick);
         skillButton.onClick.AddListener(OnSkillButtonClick);
         ultimateButton.onClick.AddListener(OnUltimateButtonClick);
+
+        ShowBattleStatus("戰鬥開始");
     }
 
     public void ShowUnitButtonPanel(Unit unit)
@@ -72,6 +79,13 @@ public class BattleManagerUI : MonoBehaviour
                 skillPointImages[i].gameObject.SetActive(false);
             }
         }
+    }
+
+    public void ShowBattleStatus(string text)
+    {
+        battleStatusImage.gameObject.SetActive(true);
+        battleStatusText.text = text;
+        battleStatusAnimator.SetTrigger("Play");
     }
 
     public void OnAttackButtonClick()

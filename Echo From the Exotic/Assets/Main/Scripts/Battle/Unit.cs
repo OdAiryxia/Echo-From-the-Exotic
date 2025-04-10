@@ -2,12 +2,13 @@
 
 public class Unit : MonoBehaviour
 {
-    public GameObject unitObject;
     [Header("單位名稱")]
     public string unitName;
+    public GameObject unitObject;
     [Header("行動速度")]
     public float actionValue = 100f;
     public float speed = 10f;
+
     [Header("屬性值")]
     public float health;
     public float attack;
@@ -15,6 +16,7 @@ public class Unit : MonoBehaviour
     [Space(5)]
     public float critRate;
     public float critDamage;
+
     [Header("攻擊")]
     public string attackName = "Attack";
     [Header("技能")]
@@ -29,6 +31,7 @@ public class Unit : MonoBehaviour
     public float energyGainOnAttack = 10f;
     public float energyGainOnSkill = 20f;
     public float energyGainOnDamage = 5f;
+
     [Header("移動")]
     public float moveSpeed = 20f;
     public float attackDistance = 10f;

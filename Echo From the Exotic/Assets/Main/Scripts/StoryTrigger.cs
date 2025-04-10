@@ -9,7 +9,7 @@ public class StoryTrigger : MonoBehaviour
     [SerializeField] private int progress;
     [SerializeField] private StoryPosition[] storyPositions;
     [SerializeField] private ModalWindowTemplate[] modalWindowTemplates;
-
+    [SerializeField] private bool nextCptAfterBattle;
     void Start()
     {
         flowerSys = FlowerManager.Instance.GetFlowerSystem("FlowerSystem");
@@ -17,9 +17,9 @@ public class StoryTrigger : MonoBehaviour
         {
             ProgressManager.instance.storyPositions = storyPositions;
             ProgressManager.instance.modalWindowTemplates = modalWindowTemplates;
-            ProgressManager.instance.StartChapter(ProgressManager.instance.currentChapter);
-        }
 
-        ProgressManager.instance.NextChapter();
+            ProgressManager.instance.StartChapter(ProgressManager.instance.currentChapter);
+            DataContainer.instance.nextCptAfterBattle = nextCptAfterBattle;
+        }
     }
 }

@@ -8,6 +8,11 @@ public class InteractionPromptUI : MonoBehaviour
     [SerializeField] private GameObject panel;
     [SerializeField] private TextMeshProUGUI promptText;
 
+    [HideInInspector] public bool IsDisplayed = false;
+
+    // 加上目前的 prompt 記錄
+    public string CurrentPrompt { get; private set; }
+
     void Awake()
     {
         if (instance == null)
@@ -25,11 +30,14 @@ public class InteractionPromptUI : MonoBehaviour
         panel.SetActive(false);
     }
 
-
-    [HideInInspector] public bool IsDisplayed = false;
-    public void SetUp(string promptText)
+    public void SetUp(string prompt)
     {
-        this.promptText.text = promptText;
+        // 只在內容不同時才更新文字
+        if (CurrentPrompt != prompt)
+        {
+            promptText.text = prompt;
+            CurrentPrompt = prompt;
+        }
         panel.SetActive(true);
         IsDisplayed = true;
     }
@@ -38,5 +46,6 @@ public class InteractionPromptUI : MonoBehaviour
     {
         panel.SetActive(false);
         IsDisplayed = false;
+        CurrentPrompt = null;
     }
 }

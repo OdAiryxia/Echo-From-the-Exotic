@@ -32,7 +32,7 @@ public class CharacterMovement : MonoBehaviour
     private Vector3 velocity;
     private bool isAiming = false;
 
-    void Awake()
+    private void Awake()
     {
         ProgressManager.instance.player = this.gameObject;
     }
@@ -59,7 +59,12 @@ public class CharacterMovement : MonoBehaviour
 
     void Update()
     {
-        if (!ProgressManager.instance.isStory)
+        if (ProgressManager.instance.player != this.gameObject)
+        {
+            ProgressManager.instance.player = this.gameObject;
+        }
+
+        if (!ProgressManager.instance.isStory && !ModalWindowManager.instance.isWindow)
         {
             MoveCharacter();
             HandleAiming();

@@ -11,6 +11,7 @@ public class ProgressManager : MonoBehaviour
 
     public CinemachineFreeLook cam;
     public GameObject player;
+    public AudioSource audioSource;
 
     public StoryPosition[] storyPositions;
     public ModalWindowTemplate[] modalWindowTemplates;
@@ -40,6 +41,10 @@ public class ProgressManager : MonoBehaviour
         flowerSys.RegisterCommand("SetPosition",SetPosition);
         flowerSys.RegisterCommand("SetModalWindow", SetModalWindow);
         flowerSys.RegisterCommand("ReturnCamera", ReturnCamera);
+        flowerSys.RegisterCommand("StartCpt", StartCpt);
+        flowerSys.RegisterCommand("NextCpt", NextCpt);
+        flowerSys.RegisterCommand("AudioPlay", AudioPlay);
+        flowerSys.RegisterCommand("AudioStop", AudioStop);
         flowerSys.SetupDialog();
         flowerSys.SetupUIStage();
         flowerSys.ReadTextFromResource("hide");
@@ -80,8 +85,10 @@ public class ProgressManager : MonoBehaviour
 
                 if (storyPositions[index].playerPos != null)
                 {
+                    player.GetComponent<CharacterController>().enabled = false;
                     player.gameObject.transform.position = storyPositions[index].playerPos.transform.position;
                     player.gameObject.transform.rotation = storyPositions[index].playerPos.transform.rotation;
+                    player.GetComponent<CharacterController>().enabled = true;
                 }
 
                 if (storyPositions[index].otherPos != null)
@@ -106,6 +113,7 @@ public class ProgressManager : MonoBehaviour
 
     void SetModalWindow(List<string> _params)
     {
+        currentIndex = 0;
         ShowCurrentModal();
     }
 
@@ -113,15 +121,29 @@ public class ProgressManager : MonoBehaviour
     {
         cam.Priority = 5;
     }
+    public void StartCpt(List<string> _params)
+    {
+        StartChapter(currentChapter);
+    }
+
+    public void NextCpt(List<string> _params)
+    {
+        currentChapter++;
+    }
+
+    void AudioPlay(List<string> _params)
+    {
+        audioSource.Play();
+    }
+
+    void AudioStop(List<string> _params)
+    {
+        audioSource.Stop();
+    }
     #endregion
 
     public int currentChapter = 0;
     public bool isStory = false;
-
-    public void StartCpt()
-    {
-        StartChapter(currentChapter);
-    }
 
     public void StartChapter(int chapter)
     {
@@ -131,7 +153,10 @@ public class ProgressManager : MonoBehaviour
                 flowerSys.ReadTextFromResource("prologue");
                 break;
             case 1:
-                flowerSys.ReadTextFromResource("prologue");
+                flowerSys.ReadTextFromResource("prologue_1");
+                break;
+            case 2:
+                flowerSys.ReadTextFromResource("end_demo");
                 break;
             default:
                 break;

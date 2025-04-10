@@ -3,6 +3,9 @@ using UnityEngine;
 
 public class TestUnit : Unit
 {
+    [Header("動畫")]
+    [SerializeField] private Animator animator;
+
     private Vector3 originalPosition;
     private Quaternion originalRotation;
 
@@ -45,15 +48,26 @@ public class TestUnit : Unit
     IEnumerator MoveAndAttack(Unit unit)
     {
         originalPosition = transform.position;
+        originalRotation = transform.rotation;
+
+        // 旋轉面向選定的敵方單位
+        Vector3 directionToEnemy = (unit.transform.position - transform.position).normalized;
+        Quaternion lookRotation = Quaternion.LookRotation(directionToEnemy);
+        transform.rotation = lookRotation; // 設定面向敵人
+
+        animator.SetTrigger("Attack");
         yield return StartCoroutine(MoveToPosition(unit.transform.position - unit.transform.forward * -attackDistance));
 
         GainUltimateEnergy(energyGainOnAttack);
 
-        unit.TakeDamage(CalculateDamage().damage, CalculateDamage().isCrit);
+        var (damage, isCrit) = CalculateDamage();
+        unit.TakeDamage(damage, isCrit);
+
         BattleManagerUI.instance.Impulse(0.2f);
 
         yield return new WaitForSeconds(0.5f);
         yield return StartCoroutine(MoveToPosition(originalPosition));
+        transform.rotation = originalRotation;
 
         BattleManager.instance.RemoveUnit();
         BattleManager.instance.OnPlayerActionComplete();
@@ -74,11 +88,21 @@ public class TestUnit : Unit
     IEnumerator MoveAndSkill(Unit unit)
     {
         originalPosition = transform.position;
+        originalRotation = transform.rotation;
+
+        // 旋轉面向選定的敵方單位
+        Vector3 directionToEnemy = (unit.transform.position - transform.position).normalized;
+        Quaternion lookRotation = Quaternion.LookRotation(directionToEnemy);
+        transform.rotation = lookRotation; // 設定面向敵人
+
+        animator.SetTrigger("Skill");
         yield return StartCoroutine(MoveToPosition(unit.transform.position - unit.transform.forward * -attackDistance));
 
         GainUltimateEnergy(energyGainOnSkill);
 
-        unit.TakeDamage(CalculateDamage().damage * 1.5f, CalculateDamage().isCrit);
+        var (damage, isCrit) = CalculateDamage();
+        unit.TakeDamage(damage * 1.5f, isCrit);
+
         BattleManagerUI.instance.Impulse(0.2f);
 
         yield return new WaitForSeconds(0.2f);
@@ -88,12 +112,13 @@ public class TestUnit : Unit
         {
             if (enemy != null)
             {
-                float areaDamage = CalculateDamage().damage * 0.5f;
-                enemy.TakeDamage(areaDamage, CalculateDamage().isCrit);
+                float areaDamage = damage * 0.5f;
+                enemy.TakeDamage(areaDamage, isCrit);
             }
         }
         yield return new WaitForSeconds(0.5f);
         yield return StartCoroutine(MoveToPosition(originalPosition));
+        transform.rotation = originalRotation;
 
         BattleManager.instance.RemoveUnit();
         BattleManager.instance.OnPlayerActionComplete();
@@ -113,18 +138,39 @@ public class TestUnit : Unit
     IEnumerator MoveAndUltimate(Unit unit)
     {
         originalPosition = transform.position;
+        originalRotation = transform.rotation;
+
+        // 旋轉面向選定的敵方單位
+        Vector3 directionToEnemy = (unit.transform.position - transform.position).normalized;
+        Quaternion lookRotation = Quaternion.LookRotation(directionToEnemy);
+        transform.rotation = lookRotation; // 設定面向敵人
+
+        animator.SetTrigger("Ultimate");
         yield return StartCoroutine(MoveToPosition(unit.transform.position - unit.transform.forward * -attackDistance));
 
         ultimateEnergy = 0f;
 
-        unit.TakeDamage(CalculateDamage().damage * 5f, CalculateDamage().isCrit);
+
+        var (damage, isCrit) = CalculateDamage();
+        unit.TakeDamage(damage * 5f, isCrit);
+        if (remainingSkillUses < maxSkillUses)
+        {
+            remainingSkillUses++;
+        }
         BattleManagerUI.instance.Impulse(0.2f);
 
         yield return new WaitForSeconds(0.5f);
         yield return StartCoroutine(MoveToPosition(originalPosition));
+        transform.rotation = originalRotation;
 
         BattleManager.instance.RemoveUnit();
         BattleManager.instance.OnPlayerActionComplete();
     }
     #endregion
+
+    public override void TakeDamage(float damage, bool isCrit)
+    {
+        animator.SetTrigger("Hit");
+        base.TakeDamage(damage, isCrit);
+    }
 }
