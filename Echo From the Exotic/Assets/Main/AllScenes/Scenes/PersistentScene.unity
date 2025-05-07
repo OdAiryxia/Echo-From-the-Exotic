@@ -38,12 +38,12 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.18028378, g: 0.22571412, b: 0.30692285, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
   m_ObjectHideFlags: 0
-  serializedVersion: 12
+  serializedVersion: 13
+  m_BakeOnSceneLoad: 0
   m_GISettings:
     serializedVersion: 2
     m_BounceScale: 1
@@ -148,8 +148,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8ba15849461c754489d99382a57a0b70, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  flowerSys: {fileID: 0}
+  cam: {fileID: 0}
+  player: {fileID: 0}
+  audioSource: {fileID: 0}
+  storyPositions: []
+  modalWindowTemplates: []
   currentChapter: 0
   isStory: 0
+  currentIndex: 0
 --- !u!4 &570508275
 Transform:
   m_ObjectHideFlags: 0
@@ -264,6 +271,8 @@ MonoBehaviour:
   battlePrefabEnemy: []
   removalTrigger: []
   pendingTrigger: []
+  nextCptAfterBattle: 0
+  playerName: "\u6578\u5A92\u7CFB\u5B78\u751F"
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

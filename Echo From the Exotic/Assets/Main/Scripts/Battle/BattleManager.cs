@@ -296,8 +296,28 @@ public class BattleManager : MonoBehaviour
 
         SetOutline(unit, true);
         SetOutline(target, true);
-        
-        unit.PerformAttack();
+
+        // 決定使用攻擊還是技能
+        bool useSkill = false;
+
+        // 檢查是否有技能次數可用
+        if (unit.remainingSkillUses > 0)
+        {
+            // 隨機決定是使用普通攻擊還是技能 (50% 機率使用技能)
+            useSkill = Random.value < 0.5f;
+        }
+
+        // 執行選擇的行動
+        if (useSkill)
+        {
+            Debug.Log($"敵人 {unit.unitName} 決定使用技能!");
+            unit.PerformSkill();
+        }
+        else
+        {
+            Debug.Log($"敵人 {unit.unitName} 決定使用普通攻擊!");
+            unit.PerformAttack();
+        }
     }
 
     public void MarkRemovalUnit(Unit unit)
@@ -308,8 +328,33 @@ public class BattleManager : MonoBehaviour
         }
     }
 
+    public void UpdateSelectedUnitsAfterRemoval()
+    {
+        if (pendingRemovalUnits.Contains(selectedPlayerUnit))
+        {
+            Unit newPlayerUnit = teamPlayerUnits.FirstOrDefault(u => !pendingRemovalUnits.Contains(u));
+            selectedPlayerUnit = newPlayerUnit;
+        }
+
+        if (pendingRemovalUnits.Contains(selectedEnemyUnit))
+        {
+            Unit newEnemyUnit = teamEnemyUnits.FirstOrDefault(u => !pendingRemovalUnits.Contains(u));
+            selectedEnemyUnit = newEnemyUnit;
+        }
+
+        foreach (Unit unit in teamAllUnits)
+        {
+            SetOutline(unit, false);
+        }
+
+        if (selectedPlayerUnit != null) SetOutline(selectedPlayerUnit, true);
+        if (selectedEnemyUnit != null) SetOutline(selectedEnemyUnit, true);
+    }
+
     public void RemoveUnit()
     {
+        UpdateSelectedUnitsAfterRemoval();
+
         for (int i = pendingRemovalUnits.Count - 1; i >= 0; i--)
         {
             Unit unit = pendingRemovalUnits[i];

@@ -1,5 +1,5 @@
 ﻿[LockButton]
-[wait,100]
-[SetModalWindow]
+[wait,2000]
+[SetModalWindowInputText]
 [NextCpt]
 [ReleaseButton]

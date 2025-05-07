@@ -11,8 +11,8 @@ public class CharacterMovement : MonoBehaviour
     private Renderer[] playerRenderers;
 
     [SerializeField] private Camera mainCamera;
-    [SerializeField] private CinemachineFreeLook freeLookCamera;
-    [SerializeField] private CinemachineVirtualCamera virtualCamera;
+    public CinemachineFreeLook freeLookCamera;
+    public CinemachineVirtualCamera virtualCamera;
     [SerializeField] private CanvasGroup aimCanvas;
     [SerializeField] private Image aimDot;
     [SerializeField] private Volume aimVolume;

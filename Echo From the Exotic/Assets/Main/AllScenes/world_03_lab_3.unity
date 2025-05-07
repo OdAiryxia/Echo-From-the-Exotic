@@ -38,12 +38,12 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.1470247, g: 0.3639426, b: 0.57990575, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
   m_ObjectHideFlags: 0
-  serializedVersion: 12
+  serializedVersion: 13
+  m_BakeOnSceneLoad: 0
   m_GISettings:
     serializedVersion: 2
     m_BounceScale: 1
@@ -1974,6 +1974,134 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 130581966}
   m_PrefabAsset: {fileID: 0}
+--- !u!1001 &147850165
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 964117464746835142, guid: 8d6b601d224c67e4da4ee9e0410e75bd,
+        type: 3}
+      propertyPath: spawnpointID
+      value: lab_2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1548523274995717575, guid: 8d6b601d224c67e4da4ee9e0410e75bd,
+        type: 3}
+      propertyPath: m_Name
+      value: parkinglot_3
+      objectReference: {fileID: 0}
+    - target: {fileID: 3177177237353254493, guid: 8d6b601d224c67e4da4ee9e0410e75bd,
+        type: 3}
+      propertyPath: scene
+      value: 17
+      objectReference: {fileID: 0}
+    - target: {fileID: 3177177237353254493, guid: 8d6b601d224c67e4da4ee9e0410e75bd,
+        type: 3}
+      propertyPath: prompt
+      value: "\u524D\u5F80\u5BE6\u9A57\u5BA4"
+      objectReference: {fileID: 0}
+    - target: {fileID: 3177177237353254493, guid: 8d6b601d224c67e4da4ee9e0410e75bd,
+        type: 3}
+      propertyPath: spawnpointID
+      value: lab_3
+      objectReference: {fileID: 0}
+    - target: {fileID: 5780497173023809168, guid: 8d6b601d224c67e4da4ee9e0410e75bd,
+        type: 3}
+      propertyPath: m_LocalScale.x
+      value: 9.979012
+      objectReference: {fileID: 0}
+    - target: {fileID: 5780497173023809168, guid: 8d6b601d224c67e4da4ee9e0410e75bd,
+        type: 3}
+      propertyPath: m_LocalScale.z
+      value: 3.3260498
+      objectReference: {fileID: 0}
+    - target: {fileID: 5780497173023809168, guid: 8d6b601d224c67e4da4ee9e0410e75bd,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 17.0827
+      objectReference: {fileID: 0}
+    - target: {fileID: 5780497173023809168, guid: 8d6b601d224c67e4da4ee9e0410e75bd,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 18.79
+      objectReference: {fileID: 0}
+    - target: {fileID: 5780497173023809168, guid: 8d6b601d224c67e4da4ee9e0410e75bd,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -26.01
+      objectReference: {fileID: 0}
+    - target: {fileID: 5780497173023809168, guid: 8d6b601d224c67e4da4ee9e0410e75bd,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5780497173023809168, guid: 8d6b601d224c67e4da4ee9e0410e75bd,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5780497173023809168, guid: 8d6b601d224c67e4da4ee9e0410e75bd,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5780497173023809168, guid: 8d6b601d224c67e4da4ee9e0410e75bd,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5780497173023809168, guid: 8d6b601d224c67e4da4ee9e0410e75bd,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5780497173023809168, guid: 8d6b601d224c67e4da4ee9e0410e75bd,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5780497173023809168, guid: 8d6b601d224c67e4da4ee9e0410e75bd,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6830316754718134852, guid: 8d6b601d224c67e4da4ee9e0410e75bd,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 1.241
+      objectReference: {fileID: 0}
+    - target: {fileID: 6830316754718134852, guid: 8d6b601d224c67e4da4ee9e0410e75bd,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6830316754718134852, guid: 8d6b601d224c67e4da4ee9e0410e75bd,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6830316754718134852, guid: 8d6b601d224c67e4da4ee9e0410e75bd,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6830316754718134852, guid: 8d6b601d224c67e4da4ee9e0410e75bd,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6830316754718134852, guid: 8d6b601d224c67e4da4ee9e0410e75bd,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 8d6b601d224c67e4da4ee9e0410e75bd, type: 3}
 --- !u!1001 &155715350
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2305,6 +2433,7 @@ MeshRenderer:
   m_RayTraceProcedural: 0
   m_RayTracingAccelStructBuildFlagsOverride: 0
   m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -2706,8 +2835,12 @@ Light:
   m_BoundingSphereOverride: {x: 0, y: 0, z: 0, w: 0}
   m_UseBoundingSphereOverride: 0
   m_UseViewFrustumForShadowCasterCull: 1
+  m_ForceVisible: 0
   m_ShadowRadius: 0
   m_ShadowAngle: 0
+  m_LightUnit: 1
+  m_LuxAtDistance: 1
+  m_EnableSpotReflector: 1
 --- !u!1001 &210068466
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -5996,8 +6129,12 @@ Light:
   m_BoundingSphereOverride: {x: 0, y: 0, z: 0, w: 0}
   m_UseBoundingSphereOverride: 0
   m_UseViewFrustumForShadowCasterCull: 1
+  m_ForceVisible: 0
   m_ShadowRadius: 0
   m_ShadowAngle: 0
+  m_LightUnit: 1
+  m_LuxAtDistance: 1
+  m_EnableSpotReflector: 1
 --- !u!4 &330406023 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8648443285999829390, guid: 326ca6c1ec61e1742aece1573915ae9a,
@@ -7188,6 +7325,7 @@ MeshRenderer:
   m_RayTraceProcedural: 0
   m_RayTracingAccelStructBuildFlagsOverride: 0
   m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -7369,8 +7507,12 @@ Light:
   m_BoundingSphereOverride: {x: 0, y: 0, z: 0, w: 0}
   m_UseBoundingSphereOverride: 0
   m_UseViewFrustumForShadowCasterCull: 1
+  m_ForceVisible: 0
   m_ShadowRadius: 0
   m_ShadowAngle: 0
+  m_LightUnit: 1
+  m_LuxAtDistance: 1
+  m_EnableSpotReflector: 1
 --- !u!1001 &434059806
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -12530,8 +12672,12 @@ Light:
   m_BoundingSphereOverride: {x: 0, y: 0, z: 0, w: 0}
   m_UseBoundingSphereOverride: 0
   m_UseViewFrustumForShadowCasterCull: 1
+  m_ForceVisible: 0
   m_ShadowRadius: 0
   m_ShadowAngle: 0
+  m_LightUnit: 1
+  m_LuxAtDistance: 1
+  m_EnableSpotReflector: 1
 --- !u!1001 &728007943
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -13429,8 +13575,12 @@ Light:
   m_BoundingSphereOverride: {x: 0, y: 0, z: 0, w: 0}
   m_UseBoundingSphereOverride: 0
   m_UseViewFrustumForShadowCasterCull: 1
+  m_ForceVisible: 0
   m_ShadowRadius: 0
   m_ShadowAngle: 0
+  m_LightUnit: 1
+  m_LuxAtDistance: 1
+  m_EnableSpotReflector: 1
 --- !u!1001 &768959861
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -16037,8 +16187,12 @@ Light:
   m_BoundingSphereOverride: {x: 0, y: 0, z: 0, w: 0}
   m_UseBoundingSphereOverride: 0
   m_UseViewFrustumForShadowCasterCull: 1
+  m_ForceVisible: 0
   m_ShadowRadius: 0
   m_ShadowAngle: 0
+  m_LightUnit: 1
+  m_LuxAtDistance: 1
+  m_EnableSpotReflector: 1
 --- !u!1 &863129311
 GameObject:
   m_ObjectHideFlags: 0
@@ -16154,8 +16308,12 @@ Light:
   m_BoundingSphereOverride: {x: 0, y: 0, z: 0, w: 0}
   m_UseBoundingSphereOverride: 0
   m_UseViewFrustumForShadowCasterCull: 1
+  m_ForceVisible: 0
   m_ShadowRadius: 0
   m_ShadowAngle: 0
+  m_LightUnit: 1
+  m_LuxAtDistance: 1
+  m_EnableSpotReflector: 1
 --- !u!4 &869199613 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 293446210988742897, guid: 4c849bedfc0e5ca44830c639aee0cbe5,
@@ -18144,8 +18302,12 @@ Light:
   m_BoundingSphereOverride: {x: 0, y: 0, z: 0, w: 0}
   m_UseBoundingSphereOverride: 0
   m_UseViewFrustumForShadowCasterCull: 1
+  m_ForceVisible: 0
   m_ShadowRadius: 0
   m_ShadowAngle: 0
+  m_LightUnit: 1
+  m_LuxAtDistance: 1
+  m_EnableSpotReflector: 1
 --- !u!1001 &915556284
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -21563,8 +21725,12 @@ Light:
   m_BoundingSphereOverride: {x: 0, y: 0, z: 0, w: 0}
   m_UseBoundingSphereOverride: 0
   m_UseViewFrustumForShadowCasterCull: 1
+  m_ForceVisible: 0
   m_ShadowRadius: 0
   m_ShadowAngle: 0
+  m_LightUnit: 1
+  m_LuxAtDistance: 1
+  m_EnableSpotReflector: 1
 --- !u!1 &1011300716
 GameObject:
   m_ObjectHideFlags: 0
@@ -24055,8 +24221,12 @@ Light:
   m_BoundingSphereOverride: {x: 0, y: 0, z: 0, w: 0}
   m_UseBoundingSphereOverride: 0
   m_UseViewFrustumForShadowCasterCull: 1
+  m_ForceVisible: 0
   m_ShadowRadius: 0
   m_ShadowAngle: 0
+  m_LightUnit: 1
+  m_LuxAtDistance: 1
+  m_EnableSpotReflector: 1
 --- !u!1001 &1125754070
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -27256,8 +27426,12 @@ Light:
   m_BoundingSphereOverride: {x: 0, y: 0, z: 0, w: 0}
   m_UseBoundingSphereOverride: 0
   m_UseViewFrustumForShadowCasterCull: 1
+  m_ForceVisible: 0
   m_ShadowRadius: 0
   m_ShadowAngle: 0
+  m_LightUnit: 1
+  m_LuxAtDistance: 1
+  m_EnableSpotReflector: 1
 --- !u!1001 &1342797268
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -30146,8 +30320,12 @@ Light:
   m_BoundingSphereOverride: {x: 0, y: 0, z: 0, w: 0}
   m_UseBoundingSphereOverride: 0
   m_UseViewFrustumForShadowCasterCull: 1
+  m_ForceVisible: 0
   m_ShadowRadius: 0
   m_ShadowAngle: 0
+  m_LightUnit: 1
+  m_LuxAtDistance: 1
+  m_EnableSpotReflector: 1
 --- !u!1 &1615200657
 GameObject:
   m_ObjectHideFlags: 0
@@ -32742,8 +32920,12 @@ Light:
   m_BoundingSphereOverride: {x: 0, y: 0, z: 0, w: 0}
   m_UseBoundingSphereOverride: 0
   m_UseViewFrustumForShadowCasterCull: 1
+  m_ForceVisible: 0
   m_ShadowRadius: 0
   m_ShadowAngle: 0
+  m_LightUnit: 1
+  m_LuxAtDistance: 1
+  m_EnableSpotReflector: 1
 --- !u!1001 &1698689641
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -33726,8 +33908,12 @@ Light:
   m_BoundingSphereOverride: {x: 0, y: 0, z: 0, w: 0}
   m_UseBoundingSphereOverride: 0
   m_UseViewFrustumForShadowCasterCull: 1
+  m_ForceVisible: 0
   m_ShadowRadius: 0
   m_ShadowAngle: 0
+  m_LightUnit: 1
+  m_LuxAtDistance: 1
+  m_EnableSpotReflector: 1
 --- !u!1001 &1760582676
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -34050,8 +34236,12 @@ Light:
   m_BoundingSphereOverride: {x: 0, y: 0, z: 0, w: 0}
   m_UseBoundingSphereOverride: 0
   m_UseViewFrustumForShadowCasterCull: 1
+  m_ForceVisible: 0
   m_ShadowRadius: 0
   m_ShadowAngle: 0
+  m_LightUnit: 1
+  m_LuxAtDistance: 1
+  m_EnableSpotReflector: 1
 --- !u!1001 &1800863575
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -34266,8 +34456,12 @@ Light:
   m_BoundingSphereOverride: {x: 0, y: 0, z: 0, w: 0}
   m_UseBoundingSphereOverride: 0
   m_UseViewFrustumForShadowCasterCull: 1
+  m_ForceVisible: 0
   m_ShadowRadius: 0
   m_ShadowAngle: 0
+  m_LightUnit: 1
+  m_LuxAtDistance: 1
+  m_EnableSpotReflector: 1
 --- !u!1001 &1810923289
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -36914,8 +37108,12 @@ Light:
   m_BoundingSphereOverride: {x: 0, y: 0, z: 0, w: 0}
   m_UseBoundingSphereOverride: 0
   m_UseViewFrustumForShadowCasterCull: 1
+  m_ForceVisible: 0
   m_ShadowRadius: 0
   m_ShadowAngle: 0
+  m_LightUnit: 1
+  m_LuxAtDistance: 1
+  m_EnableSpotReflector: 1
 --- !u!1001 &1930037312
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -39712,6 +39910,7 @@ MeshRenderer:
   m_RayTraceProcedural: 0
   m_RayTracingAccelStructBuildFlagsOverride: 0
   m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -40500,8 +40699,12 @@ Light:
   m_BoundingSphereOverride: {x: 0, y: 0, z: 0, w: 0}
   m_UseBoundingSphereOverride: 0
   m_UseViewFrustumForShadowCasterCull: 1
+  m_ForceVisible: 0
   m_ShadowRadius: 0
   m_ShadowAngle: 0
+  m_LightUnit: 1
+  m_LuxAtDistance: 1
+  m_EnableSpotReflector: 1
 --- !u!1 &2124702747
 GameObject:
   m_ObjectHideFlags: 0
@@ -41711,3 +41914,4 @@ SceneRoots:
   m_Roots:
   - {fileID: 414652628}
   - {fileID: 1896195121}
+  - {fileID: 147850165}

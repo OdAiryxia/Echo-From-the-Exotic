@@ -11,6 +11,8 @@ public class TestUnit : Unit
 
     void Start()
     {
+        unitName = DataContainer.instance.playerName;
+
         originalPosition = transform.position;
         originalRotation = transform.rotation;
     }
@@ -77,11 +79,23 @@ public class TestUnit : Unit
     #region Skill
     public override void PerformSkill()
     {
-        if (BattleManager.instance.selectedEnemyUnit != null)
+        if (gameObject.tag == "TeamPlayer")
         {
-            Debug.Log($"{unitName} used {skillName}");
-            remainingSkillUses--;
-            StartCoroutine(MoveAndSkill(BattleManager.instance.selectedEnemyUnit));
+            if (BattleManager.instance.selectedEnemyUnit != null)
+            {
+                Debug.Log($"{unitName} used {attackName}");
+                remainingSkillUses--;
+                StartCoroutine(MoveAndSkill(BattleManager.instance.selectedEnemyUnit));
+            }
+        }
+        if (gameObject.tag == "TeamEnemy")
+        {
+            if (BattleManager.instance.selectedPlayerUnit != null)
+            {
+                Debug.Log($"{unitName} used {attackName}");
+                remainingSkillUses--;
+                StartCoroutine(MoveAndSkill(BattleManager.instance.selectedPlayerUnit));
+            }
         }
     }
 
@@ -101,10 +115,9 @@ public class TestUnit : Unit
         GainUltimateEnergy(energyGainOnSkill);
 
         var (damage, isCrit) = CalculateDamage();
+
         unit.TakeDamage(damage * 1.5f, isCrit);
-
         BattleManagerUI.instance.Impulse(0.2f);
-
         yield return new WaitForSeconds(0.2f);
 
         // 對其他敵人造成 0.5 倍的範圍傷害
@@ -150,6 +163,7 @@ public class TestUnit : Unit
 
         ultimateEnergy = 0f;
 
+        yield return new WaitForSeconds(0.2f);
 
         var (damage, isCrit) = CalculateDamage();
         unit.TakeDamage(damage * 5f, isCrit);

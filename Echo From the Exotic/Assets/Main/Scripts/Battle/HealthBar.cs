@@ -14,9 +14,18 @@ public class HealthBar : MonoBehaviour
     private float maxHealth = 100f;
     private float lerpSpeed = 0.025f;
 
+    [SerializeField] private bool isPlayer;
+
     void Awake()
     {
-        unitNametag.text = unit.unitName;
+        if (isPlayer)
+        {
+            unitNametag.text = DataContainer.instance.playerName;
+        }
+        else
+        {
+            unitNametag.text = unit.unitName;
+        }
 
         maxHealth = unit.health;
         fillHealthSlider.maxValue = maxHealth;

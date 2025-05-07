@@ -14,6 +14,9 @@ public class DataContainer : MonoBehaviour
     public List<string> pendingTrigger;
 
     public bool nextCptAfterBattle;
+
+    public string playerName = "數媒系學生";
+
     void Awake()
     {
         if (instance == null)

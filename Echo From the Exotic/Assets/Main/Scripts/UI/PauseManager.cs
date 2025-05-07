@@ -158,6 +158,7 @@ public class PauseManager : MonoBehaviour
                 GameManager.instance.LoadScene((int)SceneIndexes.TitleScreen);
                 sceneState = SceneState.Menu;
                 BlackScreenManager.instance.StartCoroutine(BlackScreenManager.instance.FadeOut());
+                ProgressManager.instance.flowerSys.ReadTextFromResource("hide");
                 ModalWindowManager.instance.Close();
             },
             currentTemplate.declineText, () =>

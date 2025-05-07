@@ -73,12 +73,12 @@ MonoBehaviour:
   unitName: "\u6578\u5A92\u7CFB\u5B78\u751F"
   unitObject: {fileID: 6118354517503921766}
   actionValue: 100
-  speed: 10
-  health: 9999
-  attack: 999
-  defence: 50
-  critRate: 50
-  critDamage: 50
+  speed: 11
+  health: 8889
+  attack: 1011
+  defence: 101
+  critRate: 49
+  critDamage: 63
   attackName: "\u653B\u64CA"
   skillName: "\u6280\u80FD"
   maxSkillUses: 5
@@ -210,6 +210,11 @@ PrefabInstance:
       propertyPath: unit
       value: 
       objectReference: {fileID: 1113773725353990860}
+    - target: {fileID: 1844938876079845375, guid: 3e6c5f06dfeea284e848a510c3615471,
+        type: 3}
+      propertyPath: isPlayer
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2080368631956062619, guid: 3e6c5f06dfeea284e848a510c3615471,
         type: 3}
       propertyPath: m_AnchorMax.y

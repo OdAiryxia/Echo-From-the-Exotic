@@ -1,5 +1,12 @@
 fileFormatVersion: 2
 guid: dbb9e63e361b50a46beacb646883c10d
+AssetOrigin:
+  serializedVersion: 1
+  productId: 281737
+  packageName: Anime Shading Plus
+  packageVersion: 1.23
+  assetPath: Assets/ASP/Demo/Models/hayakawaAoi/Models/Hayakawa_Aoi.fbx
+  uploadId: 730998
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable: []
@@ -16,8 +23,6 @@ ModelImporter:
     optimizeGameObjects: 0
     removeConstantScaleCurves: 0
     motionNodeName: 
-    rigImportErrors: 
-    rigImportWarnings: 
     animationImportErrors: 
     animationImportWarnings: 
     animationRetargetingWarnings: 
@@ -77,8 +82,7 @@ ModelImporter:
     legacyComputeAllNormalsFromSmoothingGroupsWhenMeshHasBlendShapes: 0
     blendShapeNormalImportMode: 2
     normalSmoothingSource: 0
-  referencedClips:
-  - 8f0cadd0a11692547bb45a0da11b7071
+  referencedClips: []
   importAnimation: 1
   humanDescription:
     serializedVersion: 3
@@ -2671,10 +2675,3 @@ ModelImporter:
   userData: ASPSmoothModel_BakeTarget
   assetBundleName: 
   assetBundleVariant: 
-AssetOrigin:
-  serializedVersion: 1
-  productId: 281737
-  packageName: Anime Shading Plus
-  packageVersion: 1.23
-  assetPath: Assets/ASP/Demo/Models/hayakawaAoi/Models/Hayakawa_Aoi.fbx
-  uploadId: 730998

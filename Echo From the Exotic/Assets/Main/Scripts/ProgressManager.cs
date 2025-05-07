@@ -7,7 +7,7 @@ using UnityEngine;
 public class ProgressManager : MonoBehaviour
 {
     public static ProgressManager instance;
-    private FlowerSystem flowerSys;
+    public FlowerSystem flowerSys;
 
     public CinemachineFreeLook cam;
     public GameObject player;
@@ -33,9 +33,11 @@ public class ProgressManager : MonoBehaviour
         cam = new GameObject("storyCam").AddComponent<CinemachineFreeLook>();
         cam.Priority = 5;
 
+        Screen.SetResolution(Screen.currentResolution.width, Screen.currentResolution.height, true);
+
         flowerSys = FlowerManager.Instance.CreateFlowerSystem("FlowerSystem", true);
         flowerSys.textSpeed = 0.05f;
-        flowerSys.SetScreenReference(1920, 1080);
+        flowerSys.SetScreenReference(Screen.currentResolution.width, Screen.currentResolution.height);
         flowerSys.RegisterCommand("LockButton", LockButton);
         flowerSys.RegisterCommand("ReleaseButton", ReleaseButton);
         flowerSys.RegisterCommand("SetPosition",SetPosition);
@@ -45,6 +47,9 @@ public class ProgressManager : MonoBehaviour
         flowerSys.RegisterCommand("NextCpt", NextCpt);
         flowerSys.RegisterCommand("AudioPlay", AudioPlay);
         flowerSys.RegisterCommand("AudioStop", AudioStop);
+        flowerSys.RegisterCommand("SetModalWindowInputText", SetModalWindowInputText);
+        flowerSys.SetVariable("PlayerName", "數媒系學生");
+
         flowerSys.SetupDialog();
         flowerSys.SetupUIStage();
         flowerSys.ReadTextFromResource("hide");
@@ -52,10 +57,13 @@ public class ProgressManager : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Space) | Input.GetMouseButtonDown(0))
+        if (!ModalWindowManager.instance.isWindow)
         {
-            // Continue the messages, stoping by [w] or [lr] keywords.
-            flowerSys.Next();
+            if (Input.GetKeyDown(KeyCode.Space) | Input.GetMouseButtonDown(0))
+            {
+                // Continue the messages, stoping by [w] or [lr] keywords.
+                flowerSys.Next();
+            }
         }
     }
 
@@ -117,6 +125,11 @@ public class ProgressManager : MonoBehaviour
         ShowCurrentModal();
     }
 
+    void SetModalWindowInputText(List<string> _params)
+    {
+        ModalWindowManager.instance.ShowInputField();
+    }
+
     void ReturnCamera(List<string> _params)
     {
         cam.Priority = 5;
@@ -140,6 +153,7 @@ public class ProgressManager : MonoBehaviour
     {
         audioSource.Stop();
     }
+
     #endregion
 
     public int currentChapter = 0;
@@ -156,7 +170,13 @@ public class ProgressManager : MonoBehaviour
                 flowerSys.ReadTextFromResource("prologue_1");
                 break;
             case 2:
-                flowerSys.ReadTextFromResource("end_demo");
+                flowerSys.ReadTextFromResource("chapter_1");
+                break;
+            case 3:
+                flowerSys.ReadTextFromResource("chapter_1_1");
+                break;
+            case 4:
+                flowerSys.ReadTextFromResource("free");
                 break;
             default:
                 break;
@@ -198,5 +218,11 @@ public class ProgressManager : MonoBehaviour
                 ModalWindowManager.instance.Close();
             }
         );
+    }
+
+    public void SetPlayerName()
+    {
+        flowerSys.SetVariable("PlayerName", DataContainer.instance.playerName);
+        Debug.Log($"set player name to {DataContainer.instance.playerName}");
     }
 }

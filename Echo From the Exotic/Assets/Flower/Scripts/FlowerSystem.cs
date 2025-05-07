@@ -452,6 +452,7 @@ namespace Flower
                 var UIStagePrefab = LoadResource<GameObject>(resourcePath);
                 var uiStage = CreateAsSceneObject("_UIStage_" + key, UIStagePrefab, Vector3.zero, false);
                 uiStage.GetComponent<Canvas>().sortingOrder = sortLayer;
+                uiStage.GetComponent<CanvasScaler>().referenceResolution = new(Screen.currentResolution.width, Screen.currentResolution.height);
             }
             catch (Exception e)
             {

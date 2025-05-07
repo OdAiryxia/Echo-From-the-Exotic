@@ -112,7 +112,7 @@ public class GameManager : MonoBehaviour
 
         yield return new WaitForSeconds(0.1f);
 
-        for (int i = 0; i < 10; i++)
+        for (int i = 0; i < 20; i++)
         {
             CharacterMovement[] players = FindObjectsByType<CharacterMovement>(FindObjectsSortMode.None);
             if (players.Length > 0)
@@ -120,7 +120,7 @@ public class GameManager : MonoBehaviour
                 currentPlayer = players[0].gameObject;
                 break;
             }
-            yield return new WaitForSeconds(0.1f); // 等待 0.1 秒再試
+            yield return null;
         }
 
         if (currentPlayer == null)
@@ -133,7 +133,7 @@ public class GameManager : MonoBehaviour
 
         bool positionSet = false;
 
-        for (int i = 0; i < 5; i++)
+        for (int i = 0; i < 20; i++)
         {
             if (!string.IsNullOrEmpty(spawnpointID))
             {
@@ -164,7 +164,7 @@ public class GameManager : MonoBehaviour
             }
 
             if (positionSet) break;
-            yield return new WaitForSeconds(0.1f);
+            yield return null;
         }
 
         if (!positionSet)

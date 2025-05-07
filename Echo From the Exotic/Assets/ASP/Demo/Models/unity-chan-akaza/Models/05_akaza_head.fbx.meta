@@ -1,5 +1,12 @@
 fileFormatVersion: 2
 guid: c9318fddee2bcde49a6bb4a592b0a824
+AssetOrigin:
+  serializedVersion: 1
+  productId: 281737
+  packageName: Anime Shading Plus
+  packageVersion: 1.23
+  assetPath: Assets/ASP/Demo/Models/unity-chan-akaza/Models/05_akaza_head.fbx
+  uploadId: 730998
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable:
@@ -31,8 +38,6 @@ ModelImporter:
     optimizeGameObjects: 0
     removeConstantScaleCurves: 0
     motionNodeName: 
-    rigImportErrors: 
-    rigImportWarnings: 
     animationImportErrors: 
     animationImportWarnings: 
     animationRetargetingWarnings: 
@@ -92,8 +97,7 @@ ModelImporter:
     legacyComputeAllNormalsFromSmoothingGroupsWhenMeshHasBlendShapes: 1
     blendShapeNormalImportMode: 1
     normalSmoothingSource: 0
-  referencedClips:
-  - 612ec39cb4c498b47a542b7e83e4e869
+  referencedClips: []
   importAnimation: 1
   humanDescription:
     serializedVersion: 3
@@ -123,10 +127,3 @@ ModelImporter:
   userData: 
   assetBundleName: 
   assetBundleVariant: 
-AssetOrigin:
-  serializedVersion: 1
-  productId: 281737
-  packageName: Anime Shading Plus
-  packageVersion: 1.23
-  assetPath: Assets/ASP/Demo/Models/unity-chan-akaza/Models/05_akaza_head.fbx
-  uploadId: 730998
