@@ -19,12 +19,15 @@ public class Unit : MonoBehaviour
 
     [Header("攻擊")]
     public string attackName = "Attack";
+    [TextArea(3,10)] public string attackDesc;
     [Header("技能")]
     public string skillName = "Skill";
+    [TextArea(3, 10)] public string skillDesc;
     public int maxSkillUses = 5;
     public int remainingSkillUses;
     [Header("大招")]
     public string ultimateName = "Ultimate Attack";
+    [TextArea(3, 10)] public string ultimateDesc;
     public float ultimateEnergy = 40f;
     public float maxUltimateEnergy = 100f;
     [Space(5)]

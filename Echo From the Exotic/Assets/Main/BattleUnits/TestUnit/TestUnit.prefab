@@ -80,10 +80,13 @@ MonoBehaviour:
   critRate: 49
   critDamage: 63
   attackName: "\u653B\u64CA"
+  attackDesc: "<b><color=#dbb108>\u7B46\u58D3</color><b>\n\u5C0D\u6307\u5B9A\u55AE\u9AD4\u9020\u6210\u50B7\u5BB3"
   skillName: "\u6280\u80FD"
+  skillDesc: "<b><color=#dbb108>\u96FB\u5B50\u65AC\u64CA</color><b>\n\u5C0D\u6307\u5B9A\u55AE\u9AD4\u9020\u6210\u50B7\u5BB3\n\u4E26\u5C0D\u5168\u9AD4\u9020\u6210\u984D\u5916\u50B7\u5BB3"
   maxSkillUses: 5
   remainingSkillUses: 0
   ultimateName: "\u5927\u62DB"
+  ultimateDesc: "<b><color=#dbb108>\u6B7B\u7DDA</color><b>\n\u5C0D\u6307\u5B9A\u55AE\u9AD4\u9020\u6210\u5DE8\u91CF\u50B7\u5BB3"
   ultimateEnergy: 40
   maxUltimateEnergy: 100
   energyGainOnAttack: 10

@@ -28,7 +28,7 @@ public class BattleManager : MonoBehaviour
     private List<Unit> pendingRemovalUnits = new List<Unit>();
 
     private float actionValueDecreaseRate = 10f;
-    private bool inBattle = false;
+    public bool inBattle = false;
     private bool isPlayerActionComplete = true;
     private bool isActionInProgress = false;
     [Header("目前選擇單位")]
@@ -126,6 +126,12 @@ public class BattleManager : MonoBehaviour
 
     void Update()
     {
+        if (Cursor.lockState != CursorLockMode.None && Cursor.visible != true)
+        {
+            Cursor.lockState = CursorLockMode.None;
+            Cursor.visible = true;
+        }
+
         if (inBattle)
         {
             if (isPlayerActionComplete && !isActionInProgress)

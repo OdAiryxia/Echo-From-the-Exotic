@@ -183,4 +183,19 @@ public class GameManager : MonoBehaviour
         Debug.Log("戰鬥場景載入完成！");
         BlackScreenManager.instance.StartCoroutine(BlackScreenManager.instance.FadeOut());
     }
+
+
+
+    private void Update()
+    {
+        if (Input.GetKey(KeyCode.Tab))
+        {
+            Time.timeScale = 3.0f;
+        }
+
+        if (Input.GetKeyUp(KeyCode.Tab))
+        {
+            Time.timeScale = 1.0f;
+        }
+    }
 }

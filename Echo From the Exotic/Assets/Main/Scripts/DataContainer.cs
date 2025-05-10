@@ -17,6 +17,7 @@ public class DataContainer : MonoBehaviour
 
     public string playerName = "數媒系學生";
 
+    public int battleCount = 0;
     void Awake()
     {
         if (instance == null)
